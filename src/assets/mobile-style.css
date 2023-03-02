@@ -1,0 +1,94 @@
+/*global start*/
+.hide-mobile {display: none !important;}
+/*global end*/
+
+.head-box { padding: 15px 10px;background: #5a9873;}
+h1 {margin: 0 0 0 8px;font-size: 20px;color: #FFF;border: none;font-weight: normal;}
+#smartgrow-home-cardbox {background: #EFF2F9;border: none;}
+#smartgrow-home-cardbox > .ant-card-body {padding-left: 0;padding-right: 0;padding-top: 0;}
+#smartgrow-home-card {display: block;text-align: left;margin-bottom: -13px;}
+#smartgrow-home-card > div,.mobile-oncellRoundbox > div {width: 23%;background: #FFF;margin-top: 5px;margin-bottom: 5px;display: inline-block;float: none;margin-right: 1.8%;text-align: center;box-sizing: border-box;padding-top: 8px;padding-bottom: 8px;border-radius: 10px;}
+.mobile-oncellRoundbox > div {padding-top: 8px !important;padding-bottom: 8px !important;}
+.text-dt {color: #797979;font-weight: bold;margin-bottom: 6px;}
+.text-dd {font-size: 14px;color: #797979;}
+.card-box_dark {background: #5a9873 !important;}
+.card-box_dark > .ant-card-body {padding: 6px !important;}
+.home-cardbox {color: #797979 !important;border-radius: 6px !important;padding:8px 4px !important}
+.ant-card-body {color: #797979 !important;font-weight: bold;}
+.home-cardtitle {padding-top: 0 !important;font-weight: bold;padding-bottom: 0 !important;border: none !important;} 
+#smart-home-modebox {border: none;border-radius: 6px;}
+.home-cardinner {padding-top: 4px !important;}
+.home-cardinner > div {color: #797979 !important;font-weight: bold !important;}
+.mobile-normal-table td{border: none !important;padding-top: 8px;padding-bottom: 0px;}
+#smartgrow-loginbox > div {border-radius: 10px;}
+#smartgrow-loginbox .el-dialog__body {padding-bottom: 0;padding-top: 0;width: 353px !important;}
+#mobile-control-more {color: #FFF;margin-right: 20px;}
+#mainBox > .el-menu {position: absolute ;left: 0;width: 106px;height: 100%;z-index: 20;}
+
+#smartgrow-operation-mobilebox {background: none;}
+#smartgrow-operation-mobilebox .mobile-no-bg {background: none;padding: 0;margin-bottom: 0px !important;border: none !important;}
+#smartgrow-operation-mobilebox .mobile-no-bg > div {padding: 0;}
+#smartgrow-operation-mobilebox > div {padding: 0 !important;}
+.mobile-oncellbox {display: block;margin: 0;margin-left: 0 !important;margin-right: 0 !important;}
+.mobile-oncell {background: #FFF;float: none !important;box-sizing: border-box;width: 100%;margin-bottom: 10px;border-radius: 6px;display: flex;justify-content: space-between;padding: 12px !important;align-items: center;}
+.mobile-oncell h5,.mobile-oncell .ant-statistic-title,.like-mobileone-title {display: inline-block;margin-bottom: 0;vertical-align: middle;;color: #797979 !important}
+.mobile-oncell h5+p,.mobile-oncell .desc_txt,.mobile-oncell .ant-statistic-content {display: inline-block;margin-bottom: 0 !important;vertical-align: middle;}
+
+.mobile-oncell .ant-statistic {display: flex;justify-content: space-between;width: 100%;align-items: center;}
+.mobile-oncell h5,.like-mobileone-title {font-size: 14px !important;color: #797979 !important;font-weight: bold;}
+.like-mobileone-title {margin-bottom: 10px;}
+.mobile-oncell .ant-statistic-content-value-int,.mobile-oncell .ant-statistic-content-value-decimal{font-size: 14px;color: #797979 !important;}
+.ant-statistic-content {font-size: 14px;line-height: 1.5;}
+.ant-statistic-content-value {color: #797979 !important;}
+.mobile-co2-btn {margin-top: 0 !important;}
+#smartgrow-home-card1 {border: none;background: none;margin-top: -20px;margin-bottom: 0;}
+#smartgrow-home-card1 > div {padding: 0;overflow: hidden;}
+/*.op-card_mobile1 {width: 23% !important; background: #FFF !important; margin-top: 5px !important; margin-bottom: 5px !important; display: inline-block !important; float: none !important; margin-right: 1.8% !important; text-align: center !important; -webkit-box-sizing: border-box !important; box-sizing: border-box !important; padding-top: 8px !important; padding-bottom: 8px !important; border-radius: 10px !important;}*/
+.op-card_mobile1 {}
+.mobile-space-btn1 {margin-left: 4px !important;}
+.mobile-wrap-card { background: #FFF !important; margin-top: 5px !important; margin-bottom: 5px !important;text-align: center !important; -webkit-box-sizing: border-box !important; box-sizing: border-box !important; padding-top: 8px !important; padding-bottom: 8px !important; border-radius: 10px !important;}
+.ym-main {padding-left: 0 !important;padding-right: 0 !important;}
+.mobile-warp-inner {width: 96%;margin-left: 2%;}
+.mobile-el-tabs {width: 100% !important;margin-right: 0 !important;}
+.planstage-mobile-p1 {margin-right: 0 !important;}
+.planstage-mobile-p2 {margin-top: 30px !important;}
+.mobile-planSetting-btn1,.mobile-planSetting-btn2,.mobile-planSetting-btn3,.mobile-planSetting-btn4 {margin-bottom: 6px !important;}
+.mobile-planSetting-btn2 {margin-right: 0 !important;}
+.mobile-planSetting-btn5 {margin-left: 0 !important;}
+.ym-main {width: 100% !important;}
+.el-tabs__header {background: #FFF !important;}
+.el-tabs__header {padding-left: 15px !important;padding-right: 15px !important;} 
+.el-tabs__content {margin-left: 15px !important;margin-right: 15px !important;}
+#smartgrow-time-picker {width: 300px;}
+
+/*currentIp start*/
+    .mobile-home-bhbox {margin-bottom: 6px !important;}
+/*currentIp end*/
+body #mainBox .el-menu-item.is-active {color: #5a9873 !important;}
+.light-headerbar {display: flex;justify-content: space-between;align-items: center;}
+#smartgrow-operation-mobilebox .common-card .space-btm1 {margin-bottom: 0;}
+#smartgrow-operation-mobilebox .mobile-space-top1 .common-card .space-btm1 {margin-bottom: 20px;padding-top: 10px;}
+.light-headerbar h5 {position: relative;top: -5px;} 
+.card-box_dark.space-btm {margin-bottom: 0;}
+.mobile-space-top1 {margin-top: 10px;}
+@media screen and (min-width:500px) {
+.home-autowidth-card {width: 50%;}
+.flex {display: flex}
+}
+
+
+@media screen and (max-width:500px) {
+    h1 {font-size: 16px;}
+    .head-box {padding: 6px 0;}
+    .common-card {padding: 6px 6px !important;}
+    .ym-main {padding: 6px 10px;}
+    .normal-list {padding-left: 0 !important;white-space: nowrap;}
+    .text-dt,.dw,.text-dd,.common-card,.home-cardtitle,.el-tabs__item,.mobile-oncell h5, .like-mobileone-title,.desc_txt {font-size: 12px !important;}
+    .el-tabs__content {margin-left: 0 !important;margin-right: 0 !important;}
+    .title {font-size: 14px !important;}
+    #smartgrow-home-card1 > div {margin-top: 11px;}
+    .home-autowidth-card {width: 100%;}
+    .mobile-space-btm1 {margin-bottom: 10px;}
+    .tb-atw {width: 520px;}
+    .huanhang {justify-content: space-around !important;}
+}
