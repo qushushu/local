@@ -15,7 +15,6 @@
 </template>
 <style scoped>
   #app {background: #EFF2F9;}
-  /*#app {height: 2000px;}*/
   #mainBox {display: flex;}
 </style>
 <script>
@@ -41,12 +40,12 @@
       }
       let timer;
       // if(!this.isMode && getUserPower() != 2) {
-      if(getUserPower() != 2) {
+      if(!this.isMode && getUserPower() != 2) {
       // if(true) {
         // 线上模式每秒钟调用updateRunInfo接口获取信息
         timer = setInterval(()=> {
             this.$store.dispatch("updateRunInfo");
-            this.$store.dispatch("updateRunInfo1");
+            // this.$store.dispatch("updateRunInfo1");
         },1000);
       } else {
         clearInterval(timer);

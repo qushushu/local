@@ -79,10 +79,6 @@
         <!-- 当前环境信息展示 end -->
     </a-card>
 </template>
-<style scoped>
-.space-right {margin-right: 4px;}
-.f-n {font-size: 14px;}
-</style>
 <script>
     import axios from 'axios'
     import aCard from "../common/Acard"
@@ -91,10 +87,6 @@
     export default {
         data() {
             return {
-                showIptWd: false,
-                showIptSd: false,
-                show_temp_tv: 0,
-                show_hum_tv: 0,
                 TEMP_TV: "",
                 HUM_TV: "",
                 itemList: []   // 设备各项参数列表
@@ -200,10 +192,6 @@
             getValueFromParam(param_code) {
                 let arr = this.itemList.filter(item => item["param_code"] == param_code);
                 return arr.length ? arr[0].value : "";
-            },
-            setValueFromParam(param_code,newData) {
-                let arr = this.itemList.filter(item => item["param_code"] == param_code);
-                arr[0].value = newData;
             },
             onChangeCO2V(checked) {
                 this.$confirm('确认修改二氧化碳电磁阀状态?', '提示', {

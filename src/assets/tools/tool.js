@@ -8,12 +8,14 @@ function formatTime(time) {
 	}
 }
 
+// 分钟 -> 小时:分
 function minuteToTime(minute) {
     let hour = String(parseInt(minute / 60)).padStart(2,0);
     let minute1 = String(minute % 60).padStart(2,0);
     return `${hour}:${minute1}`;
 }
 
+// 小时:分 -> 分钟
 function timeToMinute(time) {
     let [hour,min] = time.split(":");
     return hour * 60 + parseInt(min);
@@ -35,6 +37,8 @@ function switchTimeToSubmit(obj,params="param_code",valueType="ref_value") {
     return obj;
 }
 
+// 用户权限号
+/* 获取权限号（通过localStorage） */
 function getUserPower() {
     if(!localStorage.userPower) {
         return 0;
@@ -60,6 +64,7 @@ function ajax(obj) {
 }
 
 // 自动跳转到指定页面
+/* 输入权限号，跳转到指定页面，多个权限号之间用逗号分隔 */
 function autoJump() {
     let data = [{
         number: 0,       // 未登录用户
@@ -77,6 +82,7 @@ function autoJump() {
     }
 }
 
+/* 手机端、PC端获取 */
 function opinion() {
     if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
         return "mobile"

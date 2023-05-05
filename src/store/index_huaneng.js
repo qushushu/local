@@ -72,7 +72,7 @@ let store = new Vuex.Store({
 		// 更新运行状态信息
 		updateRunInfo(state,runInfo) {
 			let {alarm,ana,comm,dig,param,version} = runInfo;
-			let seedling_light = state.isPlant ? runInfo.plant_light : runInfo.seedling_light;
+			// let seedling_light = state.isPlant ? runInfo.plant_light : runInfo.seedling_light;
 			let jsonAna = {};
 			let jsonAlarm = {};
 			let jsonComm = {};
@@ -108,21 +108,21 @@ let store = new Vuex.Store({
 			state.runInfo.comm = jsonComm;
 			state.runInfo.dig = jsonDig;
 			state.runInfo.param = jsonParam;
-			if(seedling_light) {
-				state.runInfo.seedling_light_dig = state.isPlant ? seedling_light.param : seedling_light.dig;
-			} else {
-				state.runInfo.seedling_light_dig = [];
-			}
-			state.runInfo.plant_light_ana = state.isPlant ? seedling_light.ana : [];
-			state.runInfo.plant_light_param = state.isPlant ? seedling_light.param : seedling_light.dig;
-			state.plant_dig = [];
-			if(state.isPlant) {
-				let result = [];
-				for(let i in seedling_light.dig) {
-					result.push(seedling_light.dig[i].item);
-				}
-				state.plant_dig = result;
-			}
+			// if(seedling_light) {
+			// 	state.runInfo.seedling_light_dig = state.isPlant ? seedling_light.param : seedling_light.dig;
+			// } else {
+			// 	state.runInfo.seedling_light_dig = [];
+			// }
+			// state.runInfo.plant_light_ana = state.isPlant ? seedling_light.ana : [];
+			// state.runInfo.plant_light_param = state.isPlant ? seedling_light.param : seedling_light.dig;
+			// state.plant_dig = [];
+			// if(state.isPlant) {
+				// let result = [];
+				// for(let i in seedling_light.dig) {
+				// 	result.push(seedling_light.dig[i].item);
+				// }
+				// state.plant_dig = result;
+			// }
 		},
 		// 育苗调用种植灯时触发
 		updateRunInfo1(state,runInfo) {

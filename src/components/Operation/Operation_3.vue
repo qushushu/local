@@ -4,16 +4,29 @@
 <template>
 	<div>
 		<DevInfo />
-		<Light />
+		<LightYumiao v-if="!isPlant" />
+		<!-- <LightYumiao1 /> -->
+		<LightZhongzhi v-if="isPlant" />
+		<!-- <LightPlant v-if="isPlant" /> -->
+		<!-- <LightPlant /> -->
 	</div>
 </template>
 <script>
 	import DevInfo from './DevInfo'
-	import Light from './Light'
+	import LightYumiao from './LightYumiao'
+	import LightYumiao1 from './LightYumiao1'
+	import LightZhongzhi from './LightZhongzhi'
 	export default {
 		components: {
 			DevInfo,
-			Light,
+			LightYumiao,
+			LightYumiao1,
+			LightZhongzhi
+		},
+		computed: {
+			isPlant() {
+                return this.$store.state.isPlant;
+            }
 		}
 	}
 </script>

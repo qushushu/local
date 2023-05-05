@@ -10,7 +10,6 @@ if(opinion() === "mobile") {
 } else {
   import ("./assets/pc.css")
 }
-// import "bootstrap/dist/css/bootstrap.min.css"
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 Vue.use(ElementUI, { locale })
@@ -29,8 +28,6 @@ const i18n = new VueI18n({
 // 设置axios请求的token
 axios.defaults.headers.common['token'] = '8eea162a4fbe0d4b4a92485d80a47bc4'
 axios.defaults.headers.common['encrypt'] = 'false'
-
-//设置请求头
 
 Vue.config.productionTip = false
 

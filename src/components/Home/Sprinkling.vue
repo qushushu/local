@@ -133,9 +133,11 @@
             <!-- 育苗右侧水阀 end -->
         </el-row>
         <!-- 育苗水阀 end -->
-        <div class="flex">
+        <!-- <div class="flex"> -->
+        <div>
             <!-- 液位 start -->
-            <div class="home-cardbox home-autowidth-card">
+            <!-- <div class="home-cardbox home-autowidth-card"> -->
+            <div class="home-cardbox">
                 <div class="home-cardtitle">{{$t("message.液位")}}</div>
                 <div class="home-cardinner">
                      <WaterBox 
@@ -149,7 +151,7 @@
             </div>
             <!-- 液位 end -->
             <!-- 回水液位 start -->
-            <div class="home-cardbox home-autowidth-card">
+            <!-- <div class="home-cardbox home-autowidth-card">
                 <div class="home-cardtitle">{{$t("message.回水液位")}}</div>
                 <div class="home-cardinner">
                      <BWaterBox 
@@ -160,7 +162,7 @@
                          :lvAdj="lvAdj1"
                     ></BWaterBox>
                 </div>
-            </div>
+            </div> -->
             <!-- 回水液位 end -->
         </div>
     </div>

@@ -12,7 +12,7 @@
 			</el-col>
 			<el-col>
 				<el-row type="flex" justify="end" align="middle">
-					<i class="el-icon-more" id="mobile-control-more" @click="tgMobileNav"></i>
+					<i class="el-icon-more" id="mobile-control-more" @click="tgMobileNav" v-if="isMobile"></i>
 					<i class="el-icon-s-platform menu-icon" v-if="!isMobile" @click="tgShowNumLayer"></i>
 					<!-- 全部培植方案按钮 start -->
 					<i class="el-icon-menu menu-icon" @click="tgShowLayer" v-if="userPower == '1'"></i>
@@ -73,7 +73,7 @@
 	.logo {display: inline-block;border: none;text-decoration: none;}
 	.el-dropdown-link {color: #FFF;}
 	.user-icon, .menu-icon,.setting-icon {font-size: 28px; color: #FFF;cursor: pointer;margin-right: 18px;}
-	#mobile-control-more {color: #FFF;float: left;display: none;}
+	#mobile-control-more {color: #FFF;float: left;}
 	.full-layer {position: fixed;left: 0;top: 0;right: 0;bottom: 0;background: rgba(0,0,0,.1);z-index: 9;}
 </style>
 <script>
