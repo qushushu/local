@@ -1,0 +1,8 @@
+.head-box {padding: 12px 10px;background: #69C25C;}
+h1 {margin: 0 0 0 8px;font-size: 22px;color: #FFF;border: none;}
+#mobile-control-more {display: none;}
+.hide-pc {display: none !important;}
+.common-card.card-pd {padding: 24px;}
+.home-autowidth-card {width: 50%;}
+.flex {display: flex}
+/*.tb-atw {width: 638px;} */
