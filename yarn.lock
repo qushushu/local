@@ -7330,9 +7330,9 @@ vue-clock2@^1.1.5:
   resolved "https://registry.npmmirror.com/vue-clock2/-/vue-clock2-1.1.5.tgz#ba98089829e127ef635af787e391524f882946cc"
   integrity sha512-C7Da8jTxJFHIt4SaA4/Js/rNSLmypRstOjhbyl5F5x2hD7JyaSy0NSHcYgCb+ZS4ROv1b8xV7Vf24UEDb/bgCA==
 
-vue-hot-reload-api@^2.2.0:
+vue-hot-reload-api@^2.2.0, vue-hot-reload-api@^2.3.4:
   version "2.3.4"
-  resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
+  resolved "https://registry.npmmirror.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
 vue-i18n@^8.26.7:
