@@ -14,7 +14,7 @@
         <!-- 模式 end -->
         <a-card class="card-pd" v-if="!runInfo.dig.AUTO">
             <!-- 头部标题 start -->
-            <PageHeader :title="$t('message.校正')" goBack=false></PageHeader>
+            <PageHeader :title="$t('message.校正')" goBack=true></PageHeader>
             <!-- 头部标题 end -->
             <!-- tab 切换 start -->
             <el-tabs tab-position="top">

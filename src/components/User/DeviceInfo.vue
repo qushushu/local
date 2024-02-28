@@ -11,7 +11,8 @@
 		<a-card class="card-pd">
 			<!-- 标题 start -->
 			<PageHeader :title="$t('message.全部参数')">
-                <el-button class="link-side" type="primary" v-if="isWeb" size="small" @click="ParameterAdjustmentUser" slot="side">{{$t("message.参数设置")}}</el-button>
+                <el-button class="link-side" type="primary" size="small" @click="ParameterAdjustmentUser" slot="side">{{$t("message.参数设置")}}</el-button>
+                <el-button class="link-side" type="primary" size="small" @click="Calibration" slot="side" style="margin-right: 8px;">传感器校正</el-button>
             </PageHeader>
 			<!-- 标题 end -->
 			<el-tabs v-model="activeName" class="mobile-el-tabs">
@@ -123,6 +124,11 @@
 	                    query
 	                })
             	}
+            },
+            Calibration() {
+            	this.$router.push({
+                    path: "/Calibration",
+                })
             }
 	    }
 	}
