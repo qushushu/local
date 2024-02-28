@@ -1,5 +1,5 @@
 export default {
-    "isWeb": false,  
+    "isWeb": true,  
     "isPlant": false,
     "isLocal": true
 }
