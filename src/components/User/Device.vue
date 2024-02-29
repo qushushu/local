@@ -11,7 +11,7 @@
         <!-- 本地版编号 end -->
 		<a-card class="card-pd">
 			<!-- 标题 start -->
-			<PageHeader :title="$t('message.设备参数')" goBack=false></PageHeader>
+			<PageHeader :title="$t('message.设备参数')" goBack=true></PageHeader>
 			<!-- 标题 end -->
 			<!-- 搜索栏、新增 start -->
 			<SearchBox :placeholder="$t('message.请输入设备型号')" :data="search_model_code" @search="getDevParamList" />

@@ -8,6 +8,9 @@
                 <span v-if="!ErrDesc" style="font-weight: bold">{{currentDesc || ('No. ' + currentNum)}} </span>
                 <span v-if="ErrDesc">{{ErrDesc}}</span>
             </el-col>
+            <div style="position: absolute;right: 0;top: -5px;">
+                <el-button size="small" @click="toDevice">设备列表</el-button>
+            </div>
         </el-row>
         <div v-loading="loading"></div>
     </a-card>
@@ -86,6 +89,11 @@
                 let result = "";
                 result = this.arrUrl.join(":");
                 return result;
+            },
+            toDevice() {
+                this.$router.push({
+                    path: "/Device",
+                })
             }
         },
         computed: {

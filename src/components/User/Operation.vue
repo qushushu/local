@@ -14,6 +14,9 @@
         <!-- 当前编号(华能手机端隐藏) end -->
 		<div class="mode">{{runInfo.dig.AUTO ? $t("message.当前模式为自动模式，如需开关，请调节至手动模式！") : $t("message.当前模式为手动模式，你可以手动打开或关闭各个开关！")}}</div>
 		<a-card class="card-pd" id="smartgrow-operation-mobilebox">
+             <!-- 头部标题 start -->
+            <PageHeader :title="$t('message.手动操作')" goBack=true></PageHeader>
+            <!-- 头部标题 end -->
             <el-tabs tab-position="top">
 			    <el-tab-pane :label="$t('message.喷灌')"><Operation_1></Operation_1></el-tab-pane>
 			    <el-tab-pane :label="$t('message.配液')"><Operation_2></Operation_2></el-tab-pane>

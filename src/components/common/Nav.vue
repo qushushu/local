@@ -3,14 +3,14 @@
 -->
 <template>
     <el-menu :default-active="$route.path" @select="handleSelect" mode="vertical" router>
-      <el-menu-item index="/Dashboard" v-if="userPower != 2 && !isWeb">{{$t("message.仪表盘")}}</el-menu-item>
-      <el-menu-item index="/Operation" v-if="userPower == 4 && !isWeb">{{$t("message.手动操作")}}</el-menu-item>
+      <!-- <el-menu-item index="/Dashboard" v-if="userPower != 2 && !isWeb">{{$t("message.仪表盘")}}</el-menu-item> -->
+      <!-- <el-menu-item index="/Operation" v-if="userPower == 4 && !isWeb">{{$t("message.手动操作")}}</el-menu-item> -->
       <!-- <el-menu-item index="/DeviceModel" v-if="userPower == 4 && !isWeb">{{$t("message.设备模板")}}</el-menu-item> -->
-      <el-menu-item index="/Device" v-if="userPower == 4 && !isWeb">{{$t("message.设备参数")}}</el-menu-item>
-      <el-menu-item index="/DeviceInfo" v-if="userPower == 4 && !isWeb">{{$t("message.设备信息")}}</el-menu-item>
-      <el-menu-item index="/PlanSetting" v-if="userPower == 4 && !isWeb">{{$t("message.方案管理")}}</el-menu-item>
+      <!-- <el-menu-item index="/Device" v-if="userPower == 4 && !isWeb">{{$t("message.设备参数")}}</el-menu-item> -->
+      <!-- <el-menu-item index="/DeviceInfo" v-if="userPower == 4 && !isWeb">{{$t("message.设备信息")}}</el-menu-item> -->
+      <!-- <el-menu-item index="/PlanSetting" v-if="userPower == 4 && !isWeb">{{$t("message.方案管理")}}</el-menu-item> -->
       <!-- <el-menu-item index="/History" v-if="userPower == 4 && !isWeb">{{$t("message.历史记录")}}</el-menu-item> -->
-      <el-menu-item index="/Calibration" v-if="userPower == 4 && !isWeb">{{$t("message.传感器校正")}}</el-menu-item>
+      <!-- <el-menu-item index="/Calibration" v-if="userPower == 4 && !isWeb">{{$t("message.传感器校正")}}</el-menu-item> -->
 
       <el-menu-item index="/Customer" v-if="userPower == 1">{{$t("message.客户管理")}}</el-menu-item>
       <el-menu-item index="/Factory" v-if="userPower == 1">{{$t("message.工厂管理")}}</el-menu-item>

@@ -11,7 +11,7 @@
         <!-- 本地版编号 end -->
 		<a-card class="card-pd">
 			<!-- 头部标题 start -->
-			<PageHeader :title="$t('message.方案管理')" goBack=false></PageHeader>
+			<PageHeader :title="$t('message.方案管理')" goBack=true></PageHeader>
 			<!-- 头部标题 end -->
 			<!-- 搜索新增 start -->
 			<SearchBox :placeholder="$t('message.请输入育苗名称')" :data="plant" @search="getList" />
@@ -326,7 +326,7 @@
 			// 跳转到查看阶段页面
 			handleToPlanStageShow(index,row) {
 				this.$router.push({
-					path: "/PlanStageShow",
+					path: "/Plan",
 					query: {
 						id: row.id,
 						scheme_name: row.scheme_name
