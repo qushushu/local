@@ -12,8 +12,8 @@ module.exports = {
     proxyTable: {
        '/apis': {
           // target: 'http://smartlux.com.cn:3600/farm/',  // 接口域名
-          // target: 'http://10.0.0.20:3601/farm/',  // 接口域名
-          target: 'http://127.0.0.1:3801/cloud/',  // 接口域名
+          target: 'http://10.0.0.20:3601/farm/',  // 接口域名
+          // target: 'http://127.0.0.1:3801/cloud/',  // 接口域名
           changeOrigin: true,  //是否跨域
           pathRewrite: {
               '^/apis': ''   //需要rewrite重写的,
