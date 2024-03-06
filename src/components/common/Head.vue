@@ -21,6 +21,8 @@
 					<i class="el-icon-s-platform menu-icon" @click="tgShowNumLayer"></i>
 					<!-- 机器编号 end -->
 
+					<!--  -->
+					<ToggleDev v-if="showLayerNumberList"></ToggleDev>
 					<!-- 切换种植间 start -->
 					<ToggleRoom class="toggleRoom" v-if="isWeb && (userInfo.role == 4 || userInfo.role == 5)" />
 					<!-- 切换种植间 end -->
@@ -34,7 +36,7 @@
 			</el-col>
 		</el-row>
 		<!--  -->
-		<NumberList v-show="showLayerNumberList" @hideNumberLayer="hideNumberLayer"></NumberList>
+		<!-- <NumberList v-show="showLayerNumberList" @hideNumberLayer="hideNumberLayer"></NumberList> -->
 		<div class="full-layer" @click="toHideNumerLayer" v-show="showLayerNumberList"></div>
 	</header>
 </template>
@@ -55,6 +57,7 @@
 	import Setting from "./head/Setting"
 	import ToggleRoom from "./head/ToggleRoom"
 	import ToggleLanguage from "./head/ToggleLanguage"
+	import ToggleDev from "./head/Devices"
 	import {getPowerText,globalUserEnter} from "../../assets/tools/tool.js"
 	import NumberList from "./NumberList"
 	import projectJson from "../../config"
@@ -87,6 +90,7 @@
 			Setting,
 			ToggleRoom,
 			ToggleLanguage,
+			ToggleDev
 		},
 		watch: {
 			
