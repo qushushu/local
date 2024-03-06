@@ -3,7 +3,7 @@ import config from "../../config/index"
 import router from "../../router"
 import store from "../../store"
 import {getBigUserInfo} from "../../store/ajax"
-import projectJson from "../../config/project/config"
+import projectJson from "../../config"
 let {isWeb} = projectJson;
 /* 将带T的日期时间转换为标准时间 */
 function formatTime(time) {

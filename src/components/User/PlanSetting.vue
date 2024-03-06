@@ -28,9 +28,13 @@
 			      	<template slot-scope="scope">
 			      		<div class="space-btm">
 					        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.编辑')}}</el-button>
-					        <el-button class="mobile-planSetting-btn2" size="mini" type="warning" @click="handleCopy(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading">{{$t('message.复制')}}</el-button> 
-					        <el-button class="mobile-planSetting-btn3" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" disabled v-if="scope.row.id == currentPlantId">{{$t('message.删除')}}</el-button>
-					        <el-button class="mobile-planSetting-btn3" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" v-if="scope.row.id != currentPlantId">{{$t('message.删除')}}</el-button>
+					        <el-button class="mobile-planSetting-btn2" size="mini" type="warning" @click="handleCopy(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading">{{$t('message.复制')}}</el-button>
+					        <!-- 禁用删除 start -->
+					        <el-button class="mobile-planSetting-btn3" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" disabled v-if="scope.row.id == currentPlantId || scope.row.record_count != 0">{{$t('message.删除')}}</el-button>
+					        <!-- 禁用删除 end -->
+					        <!-- 启用删除 start -->
+					        <el-button class="mobile-planSetting-btn3" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" v-else>{{$t('message.删除')}}</el-button>
+					        <!-- 启用删除 end -->
 					        <el-button class="mobile-planSetting-btn4" size="mini" @click="handleToPlanStageShow(scope.$index, scope.row)">{{$t('message.查看阶段')}}</el-button>
 			      		</div>
 			      		<div>
@@ -43,7 +47,7 @@
 			    </el-table-column>
 			</el-table>
 
-			<el-table ref="multipleTable" :data="tableData" border stripe size="small" tooltip-effect="dark" v-if="isMobile">
+			<!-- <el-table ref="multipleTable" :data="tableData" border stripe size="small" tooltip-effect="dark" v-if="isMobile">
 			    <el-table-column prop="scheme_col_info" :label="$t('message.方案 / 名称')"></el-table-column>
 			    <el-table-column prop="btns" :label="$t('message.操作')" width="280">
 			      	<template slot-scope="scope">
@@ -60,7 +64,7 @@
 				        <el-button class="mobile-planSetting-btn5" size="mini" @click="handToCulRecords(scope.$index, scope.row)">{{$t('message.培植记录')}}</el-button>
 				    </template>
 			    </el-table-column>
-			</el-table>
+			</el-table> -->
 			<!-- 表格 start -->
 			<!-- 查看方案弹窗 start -->
 			<el-dialog :title="$t('message.查看方案')" :visible.sync="dialogVisibleSee" width="400px">
@@ -96,7 +100,7 @@
 <script>
 	import {formatTime} from "../../assets/tools/tool"
 	import {get_plant_list,del_plant,copy_plant,add_plant,modify_plant,plant_start,plant_finish} from "../../store/ajax.js"
-	import projectJson from "../../config/project/config"
+	import projectJson from "../../config"
 	let {isWeb} = projectJson;
 	export default {
 		data() {
@@ -123,7 +127,7 @@
 		},
 	    computed: {
 	    	isWeb() {return isWeb},
-            currentPlantId() {return this.$store.state.currentPlanInfo.plant_id},
+            currentPlantId() {return this.$store.state.currentInfo.plant.id},
             isMobile() {return this.$store.state.isMobile},
             colTdw2() {return this.isMobile ? 178 : 405},
             colTdw1() {return this.isMobile ? 100 : 150},
@@ -345,6 +349,7 @@
 		    }
 		},
 		mounted() {
+			console.log(this.currentPlantId);
 			this.getList();
 		}
 	}

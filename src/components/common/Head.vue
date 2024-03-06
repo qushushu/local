@@ -18,7 +18,7 @@
 					<!-- 用户名 end -->
 
 					<!-- 机器编号 start -->
-					<i class="el-icon-s-platform menu-icon" @click="tgShowNumLayer" v-if="!isWeb"></i>
+					<i class="el-icon-s-platform menu-icon" @click="tgShowNumLayer"></i>
 					<!-- 机器编号 end -->
 
 					<!-- 切换种植间 start -->
@@ -57,7 +57,7 @@
 	import ToggleLanguage from "./head/ToggleLanguage"
 	import {getPowerText,globalUserEnter} from "../../assets/tools/tool.js"
 	import NumberList from "./NumberList"
-	import projectJson from "../../config/project/config"
+	import projectJson from "../../config"
 	let {isWeb} = projectJson;
 	import Nav from "./Nav"
     import md5 from "md5"

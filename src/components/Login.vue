@@ -24,7 +24,7 @@
 <script>
   import md5 from "md5"
   import {login,getBigUserInfo} from "../store/ajax"
-  import projectJson from "../config/project/config"
+  import projectJson from "../config"
   let {isWeb} = projectJson
   export default {
     data() {
@@ -74,7 +74,6 @@
         // 登录回调
         async cblogin({token,userId,operateNo,role}) {
           if(isWeb) {
-
             let res = await getBigUserInfo(userId);
             if(res.code == 200){
               this.$store.commit("updateUserInfo",res.data.userInfo);

@@ -32,7 +32,7 @@
 	import Operation_1 from "./Operation/Operation_1"
 	import Operation_2 from "./Operation/Operation_2"
 	import Operation_3 from "./Operation/Operation_3"
-    import projectJson from "../../config/project/config.js"
+    import projectJson from "../../config"
 	let timer;
     let {isWeb} = projectJson;
 	export default {

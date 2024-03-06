@@ -96,7 +96,7 @@
 <script>
 	import {runInfoMixin} from "./mixins/runinfo"
 	import {autoUpdateMixin} from "./mixins/autoUpdate"
-    import projectJson from "../../config/project/config"
+    import projectJson from "../../config"
     let {isPlant,isWeb} = projectJson;
 	export default {
 		data() {

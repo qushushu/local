@@ -68,7 +68,7 @@
 	import {get_dev_model,get_dev,save_device_param_item,read_device_param,write_device_param} from "../../../store/ajax.js"
 	import download from "../../../assets/tools/downloadExcel"
 	import {switchTimeToShow,switchTimeToSubmit} from "../../../assets/tools/tool.js"
-	import arrDisList from "../../../config/param/dig_list.js"
+	import arrDisList from "../../../config/config/param/dig_list.js"
 	export default {
 		data() {
 			return {

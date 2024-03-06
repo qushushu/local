@@ -13,15 +13,17 @@
             <!-- 头部标题 start -->
             <PageHeader :title="$t('message.查看阶段')" goBack=true></PageHeader>
             <!-- 头部标题 end -->
-            <!-- 导出excel start -->
-            <el-button type="primary" size="small" @click="downloadExl" :disabled="!!!tableData.length" class="space-btm" v-if="!isMobile && !editMode">{{$t('message.导出excel')}}</el-button>
-            <!-- 导出excel end -->
-            <!-- 导出excel start -->
-            <label v-if="!isMobile && editMode"><span class="nmbtn">{{$t('message.导入excel')}}</span><input type="file" @change="importExcel" class="hide"></label>
-            <!-- 导出excel end -->
-            <!-- 插入阶段 start -->
-            <el-button v-if="editMode" type="primary" size="small" class="space-btm space-left" @click="addStage">{{$t('message.插入阶段')}}</el-button>
-            <!-- 插入阶段 end -->
+            <div class="space-btm">
+                <!-- 导出excel start -->
+                <el-button type="primary" size="small" @click="downloadExl" :disabled="!!!tableData.length" class="" v-if="!isMobile && !editMode">{{$t('message.导出excel')}}</el-button>
+                <!-- 导出excel end -->
+                <!-- 导出excel start -->
+                <label v-if="!isMobile && editMode"><span class="nmbtn">{{$t('message.导入excel')}}</span><input type="file" @change="importExcel" class="hide"></label>
+                <!-- 导出excel end -->
+                <!-- 插入阶段 start -->
+                <el-button v-if="editMode" type="primary" size="small" class="space-btm space-left" @click="addStage">{{$t('message.插入阶段')}}</el-button>
+                <!-- 插入阶段 end -->
+            </div>
             <!-- 数据表格 start -->
             <el-table ref="multipleTable" :data="tableData" border size="small" empty-text class="space-btm">
                 <el-table-column size="small" v-for="item,key in colList" :width="key==0 ? 340 : 'auto'" :key="key" :prop="item.prop" :label="item.label">
@@ -55,7 +57,7 @@
     import download from "../../assets/tools/downloadExcel"
     import {minuteToTime,timeToMinute} from "../../assets/tools/tool.js"
     import {get_plant,save_stage} from "../../store/ajax.js"
-    import projectJson from "../../config/project/config"
+    import projectJson from "../../config"
     let {isWeb} = projectJson;
     export default {
         data() {

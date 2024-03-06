@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {i18n} from "./config/language"
-import "./config/css"
-import "./config/project"
+import {i18n} from "./config"
+import "./config"
 import store from "./store"
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'

@@ -49,7 +49,7 @@
 </template>
 <script>
   import {autoUpdateMixin} from "./mixins/autoUpdate"
-  import projectJson from "../../config/project/config"
+  import projectJson from "../../config"
   import Nutrient from "./Dashboard/Nutrient"
   import CurrentPlan from "./Dashboard/CurrentPlan"
   import IrrigationYm from "./Dashboard/IrrigationYm"

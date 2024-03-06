@@ -80,7 +80,7 @@
 	</div>
 </template>
 <script>
-	import projectJson from "../../config/project/config"
+	import projectJson from "../../config"
 	import {get_device_param_list_local,delete_dev,get_dev_model_list,add_dev,modify_dev} from "../../store/ajax.js"
 	let {isWeb} = projectJson;
 	export default {

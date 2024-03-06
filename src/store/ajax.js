@@ -3,8 +3,8 @@
 import axios from 'axios'
 import {formatTime,minuteToTime,opinion} from "../assets/tools/tool"
 import store from "../store"
-import {localBaseUrl} from "../config/requestUrl"
-import projectJson from "../config/project/config"
+import {localBaseUrl} from "../config"
+import projectJson from "../config"
 let {isWeb} = projectJson;
 // 设置axios请求的token
 axios.defaults.headers.common['token'] = '8eea162a4fbe0d4b4a92485d80a47bc4'

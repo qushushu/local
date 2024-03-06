@@ -4,7 +4,7 @@ Vue.use(Vuex);
 import {opinion,setRunInfoOne} from "../assets/tools/tool"
 import {getUrl} from "../assets/tools/getRequestUrl"
 import {run_info,get_implement_plant,control,adjust} from "./ajax"
-import projectJson from "../config/project/config"
+import projectJson from "../config"
 let {isWeb} = projectJson;
 let isMobile = opinion() == "mobile";
 let i18n = localStorage.locale || "zh";

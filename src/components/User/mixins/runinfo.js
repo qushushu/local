@@ -1,8 +1,7 @@
-import {anaList} from "../../../config/param/param_analist"
-import {digList} from "../../../config/param/param_diglist"
-import {alarmList} from "../../../config/param/param_alarmlist"
-import {commList} from "../../../config/param/param_commlist"
-import projectJson from "../../../config/project/config"
+import {anaList} from "../../../config/config/param/param_analist"
+import {digList} from "../../../config/config/param/param_diglist"
+import {alarmList} from "../../../config/config/param/param_alarmlist"
+import {commList} from "../../../config/config/param/param_commlist"
 export const runInfoMixin = {
 	computed: {
 		runInfo() {return this.$store.state.runInfo},

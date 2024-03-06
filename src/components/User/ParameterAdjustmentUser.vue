@@ -47,10 +47,10 @@
 <script>
     import {get_dev_model,get_dev,save_device_param_item,read_device_param,write_device_param} from "../../store/ajax"
     import * as XLSX from "XLSX"
-    import arrDigList from "../../config/param/dig_list"
-    import base_params from "../../config/param/base_params"
+    import arrDigList from "../../config/config/param/dig_list"
+    import base_params from "../../config/config/param/base_params"
     import {switchTimeToShow,switchTimeToSubmit} from "../../assets/tools/tool.js"
-    import projectJson from "../../config/project/config.js"
+    import projectJson from "../../config"
     let {isPlant,isWeb} = projectJson;
     export default {
         data() {

@@ -30,7 +30,7 @@
     .mode {text-align: center;margin-bottom: 10px;background: rgba(148,221,230,.5);padding: 8px 16px;color: #7a7a7a;font-size: 12px;font-weight: bold;}
 </style>
 <script>
-    import projectJson from "../../config/project/config"
+    import projectJson from "../../config"
     import Weight from "./Calibration/Weight"
     import EC from "./Calibration/EC"
     import PH from "./Calibration/PH"

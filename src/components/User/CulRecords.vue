@@ -32,7 +32,7 @@
 	</div>
 </template>
 <script>
-	import projectJson from "../../config/project/config"
+	import projectJson from "../../config"
 	import download from "../../assets/tools/downloadExcel"
 	import {get_record_list} from "../../store/ajax"
 	import {formatTime} from "../../assets/tools/tool.js"
