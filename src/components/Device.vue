@@ -1,17 +1,13 @@
 <!-- 
   组件说明：本组件为设备参数组件。
-  进入方式：操作员登录后点击导航栏"设备参数"进入
-  用户权限：操作员可以使用。
+  进入方式：导航->设备参数
+  用户权限：操作员可以使用。未登录用户或其他用户自动跳转至首页。
 -->
 <template>
 	<div class="ym-main">
-		 <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
 		<a-card class="card-pd">
 			<!-- 标题 start -->
-			<PageHeader :title="$t('message.设备参数')" goBack=true></PageHeader>
+			<PageHeader :title="$t('message.设备参数')" goBack=false></PageHeader>
 			<!-- 标题 end -->
 			<!-- 搜索栏、新增 start -->
 			<SearchBox :placeholder="$t('message.请输入设备型号')" :data="search_model_code" @search="getDevParamList" />
@@ -35,9 +31,9 @@
 			<el-table ref="multipleTable" v-if="isMobile" :data="tableData" border stripe size="small" tooltip-effect="dark">
 			    <el-table-column prop="instance_number" :label="$t('message.设备编号')"></el-table-column>
 			    <el-table-column prop="model" :label="$t('message.设备型号')"></el-table-column>
-			    <el-table-column prop="btns" :label="$t('message.操作')" :width="opWidth">
+			    <el-table-column prop="btns" :label="$t('message.操作')" width="160">
 			      	<template slot-scope="scope">
-				        <el-button size="mini" class="mobile-space-btn1 mobile-planSetting-btn1" type="primary" @click="handleDetail(scope.$index, scope.row)">{{$t('message.详情')}}</el-button>
+				        <el-button size="mini" class="mobile-space-btn1 mobile-planSetting-btn1" type="primary" @click="handleDetail(scope.$index, scope.row)">详情</el-button>
 				        <el-button size="mini" class="mobile-space-btn1 mobile-planSetting-btn1" type="primary" @click="handleEdit(scope.$index, scope.row)">{{$t('message.编辑')}}</el-button>
 				        <el-button size="mini" class="mobile-space-btn1 mobile-planSetting-btn1" @click="handleToParameterAdjustment(scope.$index, scope.row)">{{$t('message.参数')}}</el-button>
 			            <el-button size="mini" class="mobile-space-btn1 mobile-planSetting-btn1" type="danger" @click="handleDelete(scope.$index, scope.row)">{{$t('message.删除')}}</el-button>
@@ -80,9 +76,11 @@
 	</div>
 </template>
 <script>
-	import projectJson from "../../config"
-	import {get_device_param_list_local,delete_dev,get_dev_model_list,add_dev,modify_dev} from "../../store/ajax.js"
-	let {isWeb} = projectJson;
+	import aCard from "./common/Acard"
+	import PageHeader from "./common/PageHeader"
+	import axios from 'axios'
+	import SearchBox from "./common/SearchBox"
+	import {formatTime,autoJump} from "../assets/tools/tool"
 	export default {
 		data() {
 			return {
@@ -112,17 +110,42 @@
 		        }
 	      	}
 		},
+		components: {
+	    	PageHeader,
+	    	aCard,
+	    	SearchBox
+	    },
 	    computed: {
-            isMobile() {return this.$store.state.isMobile},
-            i18n() {return this.$store.state.i18n},
-            opWidth() {return this.i18n == "zh" ? 275 : 328},// 操作栏表格宽度设置
-            isWeb() {return isWeb}
+	    	apiurl() {
+                return this.$store.state.apiurl;
+            },
+            isMobile() {
+                return this.$store.state.isMobile;
+            },
 	    },
 	    methods: {
 	    	// 获取设备列表
-	    	async getDevParamList(d="") {
-	    		let res = await get_device_param_list_local();
-	    		this.tableData = res;
+	    	getDevParamList(d="") {
+	    		this.search_model_code = d;
+	    		axios({
+	    			url: `${this.apiurl}/la/device/param/get_list`,
+	    			method: "post",
+	    			data: {
+	    				data: {
+				            model: "",
+				            model_code: this.search_model_code,
+				            start_time: "",
+				            end_time: ""
+				        }
+	    			}
+	    		}).then(data => {
+	    			if(data.data && data.data.code === 200) {
+	    				data.data.data.forEach(item => {
+	    					item.create_time = formatTime(item.create_time);
+	    				})
+	    				this.tableData = data.data.data;
+	    			}
+	    		})
 	    	},
 	    	// 展示新建/编辑层
 	    	async handleEdit(index,row) {
@@ -176,12 +199,24 @@
 	    	},
 	    	// 获取模板列表
 	    	async getDevModelList() {
-	    		this.modelList = await get_dev_model_list();
-	    		this.options = this.modelList.map(item=> ({
-					value: item.id,
-					label: item.model_code
-				}));
-	    		return this.options;
+	    		return new Promise((resolve,reject) => {
+	    			axios({
+		    			url: `${this.apiurl}/la/dev_model/get_list`,
+		    			method: "post",
+		    			data: {
+		    				data: {model:""}
+		    			}
+		    		}).then(data => {
+		    			if(data.data && data.data.code === 200 && data.data.data.length) {
+		    				this.modelList = data.data.data;
+		    				this.options = data.data.data.map(item=> ({
+		    					value: item.id,
+		    					label: item.model_code
+		    				}));
+		    				resolve(this.options);
+		    			};
+		    		})
+	    		});
 	    	},
 	    	// 重置修改
 		    resetForm(formName) {
@@ -200,52 +235,63 @@
 		    },
 	    	// 提交修改
 	    	submitForm(formName) {
-		        this.$refs[formName].validate(async valid => {
+		        this.$refs[formName].validate(valid => {
 		          	if (valid) {
 		          		let {id,model,model_code,dev_inst_id} = this.getModelInfo(this.t)[0];
-		          		let json = {
+		          		// 接口url判断
+		          		let url = (this.r.id == 0) ? `${this.apiurl}/la/device/param/add_dev` : `${this.apiurl}/la/device/param/modify_dev`;
+		          		let submitData = {
+				            id: "",
 		          			instance_number: this.r.instance_number,
 		          			description: this.r.description,
 				            dev_model_id: id,
 				            model,
 				            model_code,
 				            dev_inst_id: this.r.dev_inst_id
-		          		}
-		          		let res,message
-		          		if(!this.r.id) {
-		          			res = await add_dev(json);
-		          			message = this.$t("message.添加成功")
-		          		} else {
-		          			json.id = this.r.id;
-		          			res = await modify_dev(json);
-		          			message = this.$t("message.修改成功")
-		          		}
-		          		this.$message({
-                            type: 'success',
-                            message
-                        });
-		          		this.resetForm(formName);
-					    this.getDevParamList();
+		          		};
+		          		// 修改时重置id
+		          		(this.r.id !== 0) && (submitData.id = this.r.id);
+		          		axios({
+		          			method: "post",
+		          			url,
+		          			data: {
+		          				data: submitData
+		          			}
+		          		}).then(data=> {
+			          		if(data.data && data.data.code == 200) {
+			          			this.resetForm(formName);
+					          	this.getDevParamList();
+			          		}
+			          	});
 		          	} else {
 		            	return false;
 		         	}
 		        });
 		    },
 	    	// 点击删除按钮
-	    	async handleDelete(index,row) {
+	    	handleDelete(index,row) {
 	    		this.$confirm(this.$t("message.确认删除该设备参数？"), this.$t("message.确认信息"), {
 		          distinguishCancelAndClose: true,
 		          confirmButtonText: this.$t("message.确认"),
 		          cancelButtonText: this.$t("message.取消")
-		        }).then(async _ => {
-		        	let res = await delete_dev(row.id);
-					if(res) {
-						this.$message({
-					      type: 'success',
-					      message: this.$t("message.删除成功")
-					    });
-						this.getDevParamList();
-					}
+		        }).then(() => {
+		          	axios({
+		          		url: `${this.apiurl}/la/device/param/del_dev`,
+		          		method: "post",
+		          		data: {
+		          			data: {
+		          				id: row.id
+		          			}
+		          		}
+		          	}).then(data => {
+		          		if(data.data && data.data.code == 200) {
+		          			this.$message({
+				              type: 'success',
+				              message: this.$t("message.删除成功")
+				            });
+		          			this.getDevParamList();
+		          		}
+		          	})
 		        })
 	    	},
 	    	// 点击参数栏目
@@ -253,16 +299,7 @@
 	    		let data = await this.getDevModelList();
 	    		let dev_model_id = data.filter(item => (item.label === row.model_code));
 	    		if(dev_model_id.length) {
-	    			let query = {
-	    				model_code: row.model_code,
-	    				instance_number: row.instance_number,
-	    				dev_inst_id: row.dev_inst_id,
-	    				dev_model_id: dev_model_id[0].value
-	    			}
-	    			this.$router.push({
-	    				path: "/ParameterAdjustmentUser",
-	    				query
-	    			})
+	    			this.$router.push("/ParameterAdjustment?model_code=" + row.model_code + "&instance_number=" + row.instance_number + "&dev_inst_id=" + row.dev_inst_id + "&dev_model_id=" + dev_model_id[0].value);
 	    		} else {
 	    			this.$message({
 		            	type: 'error',
@@ -273,6 +310,7 @@
 		},
 		mounted() {
 			this.getDevParamList();
+			autoJump(1);
 		}
 	}
 </script>

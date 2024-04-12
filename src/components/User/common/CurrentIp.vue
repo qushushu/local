@@ -6,19 +6,18 @@
         <el-row type="flex" justify="space-between">
             <el-col class="text-center">
                 <span v-if="!ErrDesc" style="font-weight: bold">{{currentDesc || ('No. ' + currentNum)}} </span>
-                <span v-if="ErrDesc">{{ErrDesc}}</span>
+                <span v-else>{{ErrDesc}}</span>
             </el-col>
-            <div style="position: absolute;right: 0;top: -5px;">
-                <el-button size="small" @click="toDevice">设备列表</el-button>
-            </div>
         </el-row>
         <div v-loading="loading"></div>
     </a-card>
 </template>
 <script>
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
+                testNum: 20,
                 currentNum: 0,
                 currentDesc: "",
                 dataCurNum: 0,
@@ -27,6 +26,15 @@
                 loading: false,
                 ErrDesc: ""
             }
+        },
+        mixins: [envMixin],
+        computed: {
+            apiurl() {
+                let baseUrl = this.isMobile ? (window.localStorage.apiurl || "http://192.168.0.107") : window.ip.apiURL;
+                baseUrl += "/farm";
+                return baseUrl;
+            },
+            mobileBaseUrl() {return this.$store.state.mobileBaseUrl}
         },
         methods: {
             getHost() {
@@ -43,19 +51,22 @@
                             if(!isNaN(arr[0])) {
                                 // 只填写设备编号
                                 this.currentNum = Number(arr[0]);
+                                this.$store.commit("updateLocalDveNum",this.currentNum);
                                 this.dataCurNum = this.currentNum;
                                 this.currentDesc = "";
                             } else {
+                                this.$store.commit("updateLocalDveNum",0);
                                 this.ErrDesc = this.$t('message.编号设置错误');
                             }
-                            
                         }  else if(arr.length == 2 && !isNaN(arr[0])) {
                             // 填写设备编号和设备备注
                             this.currentNum = Number(arr[0]);
                             this.dataCurNum = this.currentNum;
                             this.currentDesc = arr[1];
+                            this.$store.commit("updateLocalDveNum",this.currentNum);
                         }
                     } else {
+                        this.$store.commit("updateLocalDveNum",0);
                         this.ErrDesc = this.$t('message.编号未设置，请点击右上角齿轮设置编号') + "!";
                     }
                     return;
@@ -66,55 +77,20 @@
                 let arr1 = host.split(".");
                 if(arr1.length < 4) {
                     this.ErrDesc = this.$t('message.编号获取失败') + "!";
+                    this.$store.commit("updateLocalDveNum",0);
                     return;
                 } 
                 this.hostUrl = arr1;
-                let num = arr1[3];
-                this.currentNum = Number(num);
-
+                this.currentNum = Number(arr1[3]);
+                this.$store.commit("updateLocalDveNum",this.currentNum);
                 if(localStorage.devGroup) {
                     let arr = JSON.parse(localStorage.devGroup);
-                    let res = arr.find(item => Number(item.dev_number) === this.currentNum)
-                    this.currentDesc = res.description || "";
+                    let res = arr.find(item => Number(item.dev_number) === this.currentNum);
+                    this.currentDesc = res && res.description || "";
                 }
-            },
-            changeUrl(url) {
-                this.loading = true;
-                location.href = url;
-            },
-            getNewUrl() {
-                this.hostUrl[3] = this.dataCurNum;
-                let strHost = this.hostUrl.join(".");
-                this.arrUrl[1] = strHost;
-                let result = "";
-                result = this.arrUrl.join(":");
-                return result;
-            },
-            toDevice() {
-                this.$router.push({
-                    path: "/Device",
-                })
-            }
-        },
-        computed: {
-            apiurl() {
-                return this.$store.state.apiurl;
-            },
-            localMode() {
-                return this.$store.state.localMode;
-            },
-            arrNumberList() {
-                return this.$store.state.arrNumberList;
-            },
-            isMobile() {
-                return this.$store.state.isMobile;
-            },
-            mobileBaseUrl() {
-                return this.$store.state.mobileBaseUrl;
             }
         },
         mounted() {
-            this.currentNum1 = location.href;
             this.loading = false;
             this.getHost();
         }

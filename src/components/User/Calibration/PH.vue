@@ -1,15 +1,15 @@
 <template>
     <div>
-        <a-card class=" card-pd nobdCard">
-            <section style="margin-bottom: 20px;">
+        <a-card class="card-pd nobdCard">
+            <section class="space-btm1">
                 <el-steps :active="active" finish-status="success" size="small" :align-center="true">
-                  <el-step title="Configuration"></el-step>
-                  <el-step title="calibrate Zero"></el-step>
-                  <el-step title="calibrate Slope"></el-step>
+                  <el-step :title="$t('message.配置')"></el-step>
+                  <el-step :title="$t('message.校准零点')"></el-step>
+                  <el-step :title="$t('message.校准斜率')"></el-step>
                 </el-steps>
             </section>
             <!-- 配置液校正 start -->
-            <table class="normal-table text-center space-btm" v-if="active==0">
+            <table class="normal-table text-center space-btm1" v-if="active==0">
                 <tr>
                     <td class="td-name">{{$t('message.名称')}}</td>
                     <td class="td-name">{{$t('message.当前校正液')}}</td>
@@ -28,7 +28,7 @@
             </table>
             <!-- 配置液校正 end -->
             <!-- 复位 start -->
-            <table class="normal-table text-center"  v-if="active==0" style="margin-top: 20px;">
+            <table class="normal-table text-center space-btm" v-if="active==0">
                 <tr>
                     <td class="td-name">{{$t('message.名称')}}</td>
                     <td class="td-name">{{$t('message.当前PH值')}}</td>
@@ -47,7 +47,7 @@
             </table>
             <!-- 复位 end -->
             <!-- 零点校正 start -->
-           <table class="normal-table text-center"  v-if="active==1">
+           <table class="normal-table text-center space-btm" v-if="active==1">
                 <tr>
                     <td class="td-name">{{$t('message.名称')}}</td>
                     <td class="td-name">{{$t('message.当前PH值')}}</td>
@@ -66,7 +66,7 @@
             </table>
             <!-- 零点校正 end -->
             <!-- 斜率校正 start -->
-            <table class="normal-table text-center"  v-if="active==2">
+            <table class="normal-table text-center space-btm" v-if="active==2">
                 <tr>
                     <td class="td-name">{{$t('message.名称')}}</td>
                     <td class="td-name">{{$t('message.当前PH值')}}</td>
@@ -87,8 +87,8 @@
             
             <!-- 下一步 上一步 -->
             <el-row type="flex" justify="space-between">
-                <el-button style="margin-top: 12px;" @click="prev" size="small" :disabled="active == 0">{{$t('message.上一步')}}</el-button>
-                <el-button style="margin-top: 12px;" @click="next" size="small" :disabled="active == 2">{{$t('message.下一步')}}</el-button>
+                <el-button @click="prev" size="small" :disabled="active == 0">{{$t('message.上一步')}}</el-button>
+                <el-button @click="next" size="small" :disabled="active == 2">{{$t('message.下一步')}}</el-button>
             </el-row>
         </a-card>
         <!-- 校正液层 start -->
@@ -106,11 +106,8 @@
         <!-- 校正液层 end -->
     </div>
 </template>
-<style scoped>
-    .editText {font-size: 12px;text-decoration: none;color: #409eff;}
-    .nobdCard {border: none !important;}
-</style>
 <script>
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -125,33 +122,22 @@
                 fullscreenLoading: false,
             }
         },
+        mixins: [envMixin],
         watch: {
             // loading标记改变，结束加载
             signNum(d) {
                 if(d) {
                     this.fullscreenLoading = false;
                 }
-            },
+            }
         },
         computed: {
-            // 移动端判断
-            isMobile() {
-                return this.$store.state.isMobile;
-            },
             // 弹层宽度
-            autoDialogWidth() {
-                return this.isMobile ? "353px" : "33%";
-            },
+            autoDialogWidth() {return this.isMobile ? "353px" : "33%"},
             // 判断loading结束标记
-            signNum() {
-                return this.$store.state.signNum;
-            },
-            comArrJzy() {
-                return this.arrJzy[this.currentJzy];
-            },
-            runInfo() {
-                return this.$store.state.runInfo;
-            },
+            signNum() {return this.$store.state.signNum},
+            comArrJzy() {return this.arrJzy[this.currentJzy]},
+            runInfo() {return this.$store.state.runInfo},
             PHCurList() {
                 if(this.runInfo.ana) {
                     let {PH1,PH2} = this.runInfo.ana;
@@ -160,9 +146,7 @@
                     return [];
                 }
             },
-            btnDis() {
-                return this.runInfo.dig.AUTO ? true : false
-            }
+            btnDis() {return this.runInfo.dig.AUTO ? true : false}
         },
         methods: {
             // 取消校正

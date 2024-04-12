@@ -7,7 +7,7 @@
         </div>
         <!-- 新增设备 end -->
         <!-- 设备列表 start -->
-        <el-table :data="tableData" border stripe size="small" tooltip-effect="dark">
+        <el-table :data="tableData" border stripe size="small">
             <el-table-column prop="instance_number" :label="$t('message.设备编号')"></el-table-column>
             <el-table-column prop="model" :label="$t('message.设备型号')"></el-table-column>
             <el-table-column prop="description" :label="$t('message.设备备注')"></el-table-column>
@@ -21,7 +21,7 @@
         </el-table>
         <!-- 设备列表 end -->
         <!-- 所有设备 start -->
-        <p class="text-desc" v-if="userPower == 2">没有找到您新建的设备？ <router-link class="text-desc-link" to="/DevManager"> 点击这里 </router-link>查看全部设备</p>
+        <p class="text-desc" v-if="userPower == 2">{{$t('message.没有找到您新建的设备？')}} <router-link class="text-desc-link" to="/DevManager"> {{$t('message.点击这里')}} </router-link>{{$t('message.查看全部设备')}}</p>
         <!-- 所有设备 end -->
         <!-- 创建/编辑设备弹层 start -->
         <el-dialog :title="layerTitle" :visible.sync="dialogVisibleSee" width="400px">
@@ -43,10 +43,6 @@
         <!-- 创建/编辑设备弹层 end -->
     </div>
 </template>
-<style scoped>
-    .text-desc {margin-top: 20px;color: ##606266;font-size: 12px;text-align: center;}
-    .text-desc-link {color:#000;text-decoration: underline;}
-</style>
 <script>
     import {get_device_param_list,get_dev_model_list,add_dev,modify_dev,delete_dev} from '../../../../store/ajax'
     export default {

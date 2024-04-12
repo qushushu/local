@@ -21,6 +21,7 @@
     import RoomDevice from "./Room/RoomDevice"
     import {getRoomList} from '../../../store/ajax'
     import {globalUserEnter} from '../../../assets/tools/tool.js'
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -32,6 +33,7 @@
                 value: []
             }
         },
+        mixins: [envMixin],
         props: ["rid"],
         computed: {
             factory_id() {
@@ -40,8 +42,7 @@
                 }
             },
             // 用户权限
-            userPower() {return this.$store.state.userInfo.user.role},
-            isMobile() {return this.$store.state.isMobile}
+            userPower() {return this.$store.state.userInfo.user.role}
         },
         watch: {
             rid(id) {
@@ -59,8 +60,6 @@
             goBack() {this.$router.back()},
             async getRoomList() {
                 let res = await getRoomList({id: this.room_id});
-
-                console.log(res);
                 if(res.length) {this.room_name = res[0].room_name}
             }
         },

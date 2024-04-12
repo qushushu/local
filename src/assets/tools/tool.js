@@ -1,10 +1,8 @@
-import axios from 'axios'
 import config from "../../config/index"
 import router from "../../router"
 import store from "../../store"
 import {getBigUserInfo} from "../../store/ajax"
-import projectJson from "../../config"
-let {isWeb} = projectJson;
+const isWeb = store.state.isWeb;
 /* 将带T的日期时间转换为标准时间 */
 function formatTime(time) {
 	if(time) {
@@ -101,12 +99,6 @@ function getUserPower() {
             return;
         }
     }
-
-    // if(!localStorage.userPower) {
-    //     return 0;
-    // } else {
-    //     return Number(localStorage.userPower) || 0;
-    // }
 }
 // 权限编号获取身份名称
 function getPowerText(powerId) {
@@ -117,28 +109,12 @@ function getPowerText(powerId) {
         return result.length == 1 ? result[0].identityEn : "Not Login";
     }
 }
-// ajax
-function ajax(obj) {
-	let {url,data,callback} = obj;
-	axios({
-		method: 'post',
-        url,
-        data: {
-        	data
-        }
-	}).then(data => {
-		if(data.data.code == 200) {
-    		callback(data.data);
-    	}
-	})
-}
-
 
 /* 手机端、PC端获取 */
 function opinion() {
     if((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
         return "mobile";
-    }else {
+    } else {
         return "pc";
     }
 }
@@ -152,10 +128,14 @@ function logout(callback) {
     if(callback) {
         callback();
         setTimeout(()=> {
-            router.replace({path: '/Login'});
+            if(!/Login/.test(location.href)) {
+                router.replace({path: '/Login'});
+            }
         },2000);
     } else {
-        router.replace({path: '/Login'});
+        if(!/Login/.test(location.href)) {
+            router.replace({path: '/Login'});
+        }
     }
 }
 
@@ -174,7 +154,6 @@ async function globalUserEnter() {
     currentRoom = JSON.parse(currentRoom);
     currentDev = JSON.parse(currentDev);
     currentPlan = JSON.parse(currentPlan);
-
     // 用户信息不存在直接退出系统
     if(!userInfo || userInfo == '{}') {
         logout();

@@ -5,28 +5,27 @@
 -->
 <template>
     <div class="ym-main">
-        <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
+        <!-- 顶部编号 start -->
+        <slot name="currentNum"></slot>
+        <!-- 顶部编号 end -->
         <a-card class="card-pd">
             <!-- 头部标题 start -->
-            <PageHeader :title="$t('message.查看阶段')" goBack=true></PageHeader>
+            <PageHeader :title="$t('message.查看阶段')"></PageHeader>
             <!-- 头部标题 end -->
             <div class="space-btm">
                 <!-- 导出excel start -->
-                <el-button type="primary" size="small" @click="downloadExl" :disabled="!!!tableData.length" class="" v-if="!isMobile && !editMode">{{$t('message.导出excel')}}</el-button>
+                <el-button type="primary" size="small" @click="downloadExl" :disabled="!tableData.length" class="" v-if="!isMobile && !editMode">{{$t('message.导出excel')}}</el-button>
                 <!-- 导出excel end -->
-                <!-- 导出excel start -->
-                <label v-if="!isMobile && editMode"><span class="nmbtn">{{$t('message.导入excel')}}</span><input type="file" @change="importExcel" class="hide"></label>
-                <!-- 导出excel end -->
+                <!-- 导入excel start -->
+                <label v-if="!isMobile && editMode"><span class="nmbtn">{{$t('message.导入excel')}}</span><input type="file" @change="importExcel"></label>
+                <!-- 导入excel end -->
                 <!-- 插入阶段 start -->
                 <el-button v-if="editMode" type="primary" size="small" class="space-btm space-left" @click="addStage">{{$t('message.插入阶段')}}</el-button>
                 <!-- 插入阶段 end -->
             </div>
             <!-- 数据表格 start -->
             <el-table ref="multipleTable" :data="tableData" border size="small" empty-text class="space-btm">
-                <el-table-column size="small" v-for="item,key in colList" :width="key==0 ? 340 : 'auto'" :key="key" :prop="item.prop" :label="item.label">
+                <el-table-column size="small" v-for="item,key in colList" :width="key == 0 ? 340 : 'auto'" :key="key" :prop="item.prop" :label="item.label">
                     <template slot-scope="scope">
                         <span v-if="!editMode">{{scope.row[item.prop]}}</span>
                         <div v-else>
@@ -45,20 +44,12 @@
         </a-card>
     </div>
 </template>
-<style scoped>
-    .nmbtn {padding: 9px 15px; font-size: 12px; display: inline-block; line-height: 1;  cursor: pointer; background: #e6a23c; border: 1px solid #e6a23c; color: #FFF;  transition: .1s; user-select: none; border-radius: 4px;}
-    .nmbtn:hover { border-color: #ebb563; background-color: #ebb563; }
-    .hide {display: none;}
-    .miniIpt {width: 220px;}
-    .space-left {margin-left: 8px}
-</style>
 <script>
     import * as XLSX from "XLSX"
     import download from "../../assets/tools/downloadExcel"
     import {minuteToTime,timeToMinute} from "../../assets/tools/tool.js"
     import {get_plant,save_stage} from "../../store/ajax.js"
-    import projectJson from "../../config"
-    let {isWeb} = projectJson;
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -69,6 +60,7 @@
                 editMode: false
             }
         },
+        mixins: [envMixin],
         computed: {
             colList() {
                 return [{
@@ -108,9 +100,7 @@
                     prop: "LIQ_TEMP",
                     label: this.$t('message.营养液温度'),
                 }];
-            },
-            isMobile() {return this.$store.state.isMobile},
-            isWeb() {return isWeb}
+            }
         },
         methods: {
             // 获取数据
@@ -324,6 +314,6 @@
             this.id = this.$route.query.id;
             this.scheme_name = this.$route.query.scheme_name;
             this.getList();
-        },
+        }
     }
 </script>

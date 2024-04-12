@@ -7,13 +7,13 @@
 	<div class="ym-main">
 		<a-card class="card-pd">
 			<!-- 头部标题 start -->
-			<PageHeader :title="$t('message.设置参数值')" goBack=true></PageHeader>
+			<PageHeader :title="$t('message.设置参数值')"></PageHeader>
 			<!-- 头部标题 end -->
 			<!-- 表格 start -->
 			<el-row :gutter="10" type="flex" style="margin-top: 20px;">
 				<el-col :span="14">
                     <h5 class="adjustTitle">{{$t('message.参数值调整')}}</h5>
-                    <el-table class="space-btm" ref="multipleTable" :data="tableData" border stripe size="small" :height="heightW3" tooltip-effect="dark" style="margin-top: 20px;">
+                    <el-table class="space-btm" ref="multipleTable" :data="tableData" border stripe size="small" :height="heightW3" style="margin-top: 20px;">
                         <el-table-column prop="sort_index" :label="$t('message.序号')" width="50"></el-table-column>
                         <el-table-column prop="name" :label="$t('message.参数项')" width="160"></el-table-column>
                         <el-table-column prop="param_code" :label="$t('message.代码')" width="150"></el-table-column>
@@ -28,7 +28,7 @@
                 <el-col>
                     <div :span="10">
                         <h5 class="adjustTitle">{{$t('message.开关量调整')}}</h5>
-                        <el-table class="space-btm" ref="multipleTable" :data="tableData1" border stripe size="small" :height="heightW3" tooltip-effect="dark">
+                        <el-table class="space-btm" ref="multipleTable" :data="tableData1" border stripe size="small" :height="heightW3">
                             <el-table-column prop="id" :label="$t('message.序号')" width="45"></el-table-column>
                             <el-table-column prop="name" :label="$t('message.参数项')" width="185"></el-table-column>
                             <el-table-column prop="code" :label="$t('message.代码')" width="100"></el-table-column>
@@ -50,7 +50,7 @@
 				<el-button type="warning" size="small" @click="read">{{$t('message.读设备参数')}}</el-button>
 				<label>
 					<span class="nmbtn">{{$t('message.导入excel')}}</span>
-					<input type="file"  @change="importExcel" class="com-hide">
+					<input type="file"  @change="importExcel">
 				</label>
 				<el-button size="small" @click="downloadExl" v-if="tableData.length && !isMobile">{{$t('message.导出excel')}}</el-button>
 			</div>
@@ -58,17 +58,13 @@
 		</a-card>
 	</div>
 </template>
-<style scoped>
-	.nmbtn {padding: 9px 15px; font-size: 12px; display: inline-block; line-height: 1;cursor: pointer; background: #409EFF; border: 1px solid #409EFF; color: #FFF; transition: .1s; user-select: none; border-radius: 4px;}
-    .nmbtn:hover {color: #fff; border-color: #66b1ff; background-color: #66b1ff; }
-    .adjustTitle {color: #000;font-size: 14px;margin-bottom: 8px;font-weight: bold;}
-</style>
 <script>
 	import * as XLSX from "XLSX"
 	import {get_dev_model,get_dev,save_device_param_item,read_device_param,write_device_param} from "../../../store/ajax.js"
 	import download from "../../../assets/tools/downloadExcel"
 	import {switchTimeToShow,switchTimeToSubmit} from "../../../assets/tools/tool.js"
 	import arrDisList from "../../../config/config/param/dig_list.js"
+    import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
@@ -80,12 +76,10 @@
                 disabledCodeList: ["MODEL","CONTROL1","CONTROL2"]
 	      	}
 		},
+        mixins: [envMixin],
 		computed: {
 			userInfo() {return this.$store.state.userInfo},
-            // operateNo() {return this.$store.state.user.operateNo},
-            // op_id() {return this.$store.state.user.userId},
-            isPlant() {return this.$store.state.isPlant},
-            isMobile() {return this.$store.state.isMobile},
+            op_id() {return this.userInfo.user.id},
             heightW3() {return this.isMobile ? 805 : 647},
             originCtrol1() {
                 let tb = this.tableData;
@@ -96,8 +90,6 @@
                 }
                 return res.padStart(15,"0").split("").reverse().map(item => item == '1');
             }
-	    },
-		components: {
 	    },
 	    watch: {
             originCtrol1(d) {

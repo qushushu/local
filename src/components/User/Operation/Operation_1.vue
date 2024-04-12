@@ -3,68 +3,70 @@
 -->
 <template>
     <div>
-        <a-card class="space-btm1 card-pd mobile-no-bg">
+        <!-- 实时液位、喷灌泵 start -->
+        <a-card class="space-btm1 card-pd mobile-oncellboxs">
             <el-row :gutter="20" class="mobile-oncellbox">
                 <!-- 实时液位 start -->
-                <el-col :span="8" class="mobile-oncell">
+                <el-col :span="8" :xs="24" class="mobile-oncell">
                     <h5> {{$t("message.实时液位")}} (cm)</h5>
                     <p class="desc_txt">{{LIQ_LV}}</p> 
                 </el-col>
-              <!-- 实时液位 end -->
-              <!-- 育苗的左喷灌泵 start -->
-              <el-col :span="8" class="mobile-oncell" v-if="!isPlant">
-                  <h5 class="hide-mobile"> {{$t("message.喷灌泵")}}</h5>
-                  <h5 class="hide-pc"> {{$t("message.左侧喷灌泵")}}</h5>
-                  <p><span class="hide-mobile">{{$t("message.左侧喷灌泵")}}：</span><el-switch v-model="SIP1" @change="onChangeSIP1" :disabled="AUTO" /></p>
-              </el-col>
-              <!-- 育苗的左喷灌泵 end -->
-              <!-- 育苗的右喷灌泵 start -->
-              <el-col :span="8" class="mobile-oncell" v-if="!isPlant">
-                  <h5 class="hide-mobile">&nbsp;</h5>
-                  <h5 class="hide-pc">{{$t("message.右侧喷灌泵")}}</h5>  
-                  <p><span class="hide-mobile">{{$t("message.右侧喷灌泵")}}：</span><el-switch v-model="SIP2" @change="onChangeSIP2" :disabled="AUTO" /></p>
-              </el-col>
-              <!-- 育苗的右喷灌泵 end -->
-              <!-- 种植喷灌泵 start -->
-              <el-col :span="8" class="mobile-oncell" v-if="isPlant">
-                  <h5>{{$t("message.喷灌泵")}}</h5>
-                  <p><span class="hide-mobile">{{$t("message.喷灌泵")}}：</span><el-switch v-model="SIP" @change="onChangeSIP3" :disabled="AUTO" /></p>
-              </el-col>
+                <!-- 实时液位 end -->
+                <!-- 育苗的左喷灌泵 start -->
+                <el-col :span="8" :xs="24" class="mobile-oncell" v-if="!isPlant">
+                    <h5 class="hide-mobile"> {{$t("message.喷灌泵")}}</h5>
+                    <p class="mobile-between"><span>{{$t("message.左侧喷灌泵")}}：</span><el-switch v-model="SIP1" @change="onChangeSIP1" :disabled="AUTO" /></p>
+                </el-col>
+                <!-- 育苗的左喷灌泵 end -->
+                <!-- 育苗的右喷灌泵 start -->
+                <el-col :span="8" :xs="24" class="mobile-oncell" v-if="!isPlant">
+                    <h5 class="hide-mobile">&nbsp;</h5>
+                    <p class="mobile-between"><span>{{$t("message.右侧喷灌泵")}}：</span><el-switch v-model="SIP2" @change="onChangeSIP2" :disabled="AUTO" /></p>
+                </el-col>
+                <!-- 育苗的右喷灌泵 end -->
+                <!-- 种植喷灌泵 start -->
+                <el-col :span="8" :xs="24" class="mobile-oncell" v-if="isPlant">
+                    <h5>{{$t("message.喷灌泵")}}</h5>
+                    <p><span class="hide-mobile">{{$t("message.喷灌泵")}}：</span><el-switch v-model="SIP" @change="onChangeSIP3" :disabled="AUTO" /></p>
+                </el-col>
               <!-- 种植喷灌泵 end -->
             </el-row>
         </a-card>
-        <a-card class="space-btm1 card-pd mobile-no-bg">
+        <!-- 实时液位、喷灌泵 end -->
+        <!-- 回水泵、补水阀、补水系数校正、搅拌泵 start -->
+        <a-card class="space-btm1 card-pd mobile-oncellboxs">
             <el-row :gutter="20" class="mobile-oncellbox">
                 <!-- 回水泵 start -->
-                <el-col :span="6" class="mobile-oncell">
+                <el-col :span="6" :xs="24" class="mobile-oncell">
                     <h5>{{$t("message.回水泵")}}</h5>
                     <p><span class="hide-mobile">{{$t("message.回水泵")}}：</span><el-switch v-model="BWP1" @change="onChangeBWP1" :disabled="AUTO" /></p>
                 </el-col>
                 <!-- 回水泵 end -->
                 <!-- 补水阀 start -->
-                <el-col :span="6" class="mobile-oncell">
+                <el-col :span="6" :xs="24" class="mobile-oncell">
                     <h5>{{$t("message.补水阀")}}</h5>
                     <p><span class="hide-mobile">{{$t("message.补水阀")}}：</span><el-switch v-model="WSV" @change="onChangeWSV" :disabled="AUTO" /></p>
                 </el-col>
                 <!-- 补水阀 end -->
-                <el-col :span="6" class="mobile-oncell">
+                <el-col :span="6" :xs="24" class="mobile-oncell">
                     <h5>{{$t("message.补水系数校正")}}</h5>
                     <p><span class="hide-mobile">{{$t("message.系数校正")}}：</span><el-switch v-model="openWaterXs" @change="onchangeXs" :disabled="runInfo.dig.WSV == 1" /></p>
                 </el-col>
                 <!-- 搅拌泵 start -->
-                <el-col :span="6" class="mobile-oncell">
+                <el-col :span="6" :xs="24" class="mobile-oncell">
                     <h5>{{$t("message.搅拌泵")}}</h5>
                     <p><span class="hide-mobile">{{$t("message.搅拌泵")}}：</span><el-switch v-model="MIX_P" @change="onChangeMIX_P" :disabled="AUTO" /></p>
                 </el-col>
                 <!-- 搅拌泵 end -->
             </el-row>
         </a-card>
+        <!-- 回水泵、补水阀、补水系数校正、搅拌泵 end -->
         <!-- 育苗水阀 start -->
         <a-card class="card-pd" v-if="!isPlant" >
             <h5 class="like-mobileone-title">{{$t("message.水阀")}}</h5>
             <table class="normal-table">
                 <tr>
-                    <td style="width: 62px;"></td>
+                    <td class="title-td"></td>
                     <td>{{$t("message.左侧水阀")}}</td>
                     <td>{{$t("message.右侧水阀")}}</td>
                 </tr>
@@ -93,14 +95,12 @@
         <!-- 育苗水阀 end -->
     </div>
 </template>
-<style scoped>
-  	.desc_txt {font-size: 14px; color: #5e6d82; line-height: 1.5em;}
-</style>
 <script>
     import {runInfoMixin} from "../mixins/runinfo"
     import {control,read_device_param,write_device_param,get_dev} from "../../../store/ajax.js"
+    import {envMixin} from "@/components/mixins/envMix"
 	export default {
-        mixins: [runInfoMixin],
+        mixins: [runInfoMixin,envMixin],
         data() {
             return {
                 openWaterXs: false,
@@ -110,12 +110,11 @@
                 t2: 0,
                 accuracy: 0,
                 beginWatchLv: false,
-                jzOver: false,
+                jzOver: false
             }
         },
         computed: {
             op_onOff() {return this.$store.state.op_onOff},
-            isPlant() {return this.$store.state.isPlant},
             op_id() {return String(this.$store.state.userInfo.user.id)},
             LIQ_LV() {return this.getRunInfo("ana","LIQ_LV").value},
             AUTO() {return this.getRunInfo("dig","AUTO").refValue},
@@ -174,7 +173,7 @@
             VR1: {
                 get() {return this.getRunInfo("dig","VR1").refValue},
                 set(d) {}
-            },
+            }
         },
 		methods: {
 			 // 修改XX状态

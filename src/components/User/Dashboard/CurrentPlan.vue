@@ -3,62 +3,36 @@
 -->
 <template>
     <a-card type="mint">
-        <card-header>
-            {{$t("message.当前方案")}} <router-link v-if="userInfo.role == 4" class="btn-m" to="/PlanSetting">{{$t("message.方案管理")}} <i class="el-icon-arrow-right"></i></router-link>
-        </card-header>
-        <div v-if="planInfo.id" class="mycard-body">
-            <!-- PC端详细信息 start -->
-            <div class="normal-list">
-              <el-descriptions class="form-text" size="middle" :column="3">
-                <el-descriptions-item :label="$t('message.定做育苗')">{{plantName}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.EC目标值')">{{EC_TV}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.定植日期')">{{start_time}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.栽培时间')">{{plantingTime}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.PH目标值')"> {{PH_TV}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.运行方案')">{{scheme_name}}</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.温度目标值')">{{temp_day}}（{{$t("message.日")}}） / {{temp_night}}（{{$t("message.夜")}}）</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.生产周期')">{{grow_cycle}} {{$t("message.天")}}</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.湿度目标值')">{{humidity_day}}（{{$t("message.日")}}） / {{humidity_night}}（{{$t("message.夜")}}）</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.方案备注')">{{remark}} </el-descriptions-item>
-                <el-descriptions-item :label="$t('message.日出/日落')">{{SUNRIZE}} / {{SUNSET}}</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.当前阶段')">{{stage_name}}</el-descriptions-item>
-                <el-descriptions-item :label="$t('message.CO2目标值')">{{CO2}}</el-descriptions-item>
-              </el-descriptions>
-            </div>
-            <!-- PC端详细信息 end -->
-        </div>
-        <div v-else style="text-align: center;line-height: 60px;color: #FFF;">
-            {{userInfo.role == 4 ? this.$t('message.尚未配置种植方案，请点击右侧方案详情进行配置！') : this.$t('message.尚未配置种植方案！')}}
-        </div>
+        <!-- 当前方案标题 start -->
+        <card-header>{{$t("message.当前方案")}} <router-link v-if="userInfo.role == 4" class="btn-m" to="/PlanSetting">{{$t("message.方案管理")}} <i class="el-icon-arrow-right"></i></router-link></card-header>
+        <!-- 当前方案标题 end -->
+        <!-- PC端详细信息 start -->
+        <el-descriptions v-if="planInfo.id" class="form-text" size="middle" :column="column">
+            <el-descriptions-item :label="$t('message.定做育苗')">{{plantName}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.EC目标值')">{{EC_TV}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.定植日期')">{{start_time}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.栽培时间')">{{plantingTime}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.PH目标值')"> {{PH_TV}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.运行方案')">{{scheme_name}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.温度目标值')">{{temp_day}}（{{$t("message.日")}}） / {{temp_night}}（{{$t("message.夜")}}）</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.生产周期')">{{grow_cycle}}{{$t("message.天")}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.湿度目标值')">{{humidity_day}}（{{$t("message.日")}}）/ {{humidity_night}}（{{$t("message.夜")}}）</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.方案备注')">{{remark}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.日出/日落')">{{SUNRIZE}} / {{SUNSET}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.当前阶段')">{{stage_name}}</el-descriptions-item>
+            <el-descriptions-item :label="$t('message.CO2目标值')">{{CO2}}</el-descriptions-item>
+        </el-descriptions>
+        <!-- PC端详细信息 end -->
+        <!-- 无数据 展示 start -->
+        <div v-else class="no_data text-center"> {{userInfo.role == 4 ? this.$t('message.尚未配置种植方案，请点击右侧方案详情进行配置！') : this.$t('message.尚未配置种植方案！')}} </div>
+        <!-- 无数据 展示 end -->
     </a-card>
 </template>
-<style scoped>
-    .btn-m {color: #FFF;}
-</style>
 <script>
     import {formatTime,minuteToTime} from "../../../assets/tools/tool.js"
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
-        watch: {
-            currentDevInfo() {
-                this.getCurrPlan();
-            },
-            planInfo(data) {
-                // 获取当前阶段
-                if(data.plant) {
-                    let arr_stage_item = data.plant.stage_item;
-                    if( arr_stage_item.length) {
-                          let disDay = (new Date() - new Date(data.start_time) ) / (24 * 3600 * 1000) - 1;
-                          data.curStage = arr_stage_item[arr_stage_item.length - 1];
-                          let tmp = arr_stage_item.find((item,index)=> (item.stage_content.day_offset >= disDay));
-                          tmp && (data.curStage = tmp);
-                    } else {
-                        data.curStage = {
-                            stage_content: []
-                        }
-                    }
-                }
-            }
-        },
+        mixins: [envMixin],
         computed: {
             // 用户信息
             userInfo() {return this.$store.state.userInfo.user},
@@ -87,16 +61,35 @@
                 }
             },
             currentDevInfo() {return this.$store.state.currentInfo.dev},
+            column() {return this.isMobile ? 2 : 4}
+        },
+        watch: {
+            // 切换设备后，重新获取当前方案
+            currentDevInfo() {
+                this.getCurrPlan();
+            },
+            // 方案变更后，重新获取当前阶段
+            planInfo(data) {
+                if(data.plant) {
+                    let arr_stage_item = data.plant.stage_item;
+                    if(arr_stage_item.length) {
+                        // 获取方案执行的天数
+                        let disDay = (new Date() - new Date(data.start_time)) / (24 * 3600 * 1000) - 1;
+                        // 获取方案的最后一个阶段
+                        data.curStage = arr_stage_item[arr_stage_item.length - 1];
+                        let curStage = arr_stage_item.find(item => item.stage_content.day_offset >= disDay);
+                        curStage && (data.curStage = curStage);
+                    } else {
+                        data.curStage = {
+                            stage_content: []
+                        }
+                    }
+                }
+            }
         },
         methods: {
              datedifference(sDate1, sDate2) {
-                var dateSpan, tempDate, iDays;
-                sDate1 = Date.parse(sDate1);
-                sDate2 = Date.parse(sDate2);
-                dateSpan = sDate2 - sDate1;
-                dateSpan = Math.abs(dateSpan);
-                iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
-                return iDays
+                return Math.floor(Math.abs(Date.parse(sDate1) - Date.parse(sDate2)) / (24 * 3600 * 1000));
             },
             minuteToTime,
             // 获取当前种植计划及当前阶段信息

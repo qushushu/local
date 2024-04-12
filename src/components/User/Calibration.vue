@@ -5,16 +5,15 @@
  -->
 <template>
     <div class="ym-main">
-         <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
+        <!-- 顶部编号 start -->
+        <slot name="currentNum"></slot>
+        <!-- 顶部编号 end -->
         <!-- 模式 start -->
-        <div class="mode">{{runInfo.dig.AUTO ? $t("message.当前模式为自动模式，如需校正，请调节至手动模式！") : $t("message.当前模式为手动模式，您可以校正传感器！")}}</div>
+        <Lbar>{{auto.refValue ? $t("message.当前模式为自动模式，如需校正，请调节至手动模式！") : $t("message.当前模式为手动模式，您可以校正传感器！")}}</Lbar>
         <!-- 模式 end -->
-        <a-card class="card-pd" v-if="!runInfo.dig.AUTO">
+        <a-card class="card-pd">
             <!-- 头部标题 start -->
-            <PageHeader :title="$t('message.校正')" goBack=true></PageHeader>
+            <PageHeader :title="$t('message.校正')"></PageHeader>
             <!-- 头部标题 end -->
             <!-- tab 切换 start -->
             <el-tabs tab-position="top">
@@ -26,37 +25,23 @@
         </a-card>
     </div>
 </template>
-<style scoped>
-    .mode {text-align: center;margin-bottom: 10px;background: rgba(148,221,230,.5);padding: 8px 16px;color: #7a7a7a;font-size: 12px;font-weight: bold;}
-</style>
 <script>
-    import projectJson from "../../config"
+    import {autoUpdateMixin} from "./mixins/autoUpdate"
+    import {runInfoMixin} from "./mixins/runinfo"
     import Weight from "./Calibration/Weight"
     import EC from "./Calibration/EC"
     import PH from "./Calibration/PH"
-    let {isWeb} = projectJson;
-    let timer;
+    import Lbar from "./common/Lbar"
     export default {
+        mixins: [autoUpdateMixin,runInfoMixin],
         components: {
             Weight,
             EC,
             PH,
+            Lbar
         },
         computed: {
-           runInfo() {return this.$store.state.runInfo},
-           isWeb() {return isWeb}
-        },
-        methods: {
-            updataRunInfo() {
-                this.$store.dispatch("updateRunInfo");
-            }
-        },
-        mounted() {
-            this.updataRunInfo();
-            timer = setInterval(this.updataRunInfo,1000);
-        },
-        destroyed () {
-          clearInterval(timer);
+           auto() {return this.getRunInfo("dig","AUTO")}
         }
     }
 </script>

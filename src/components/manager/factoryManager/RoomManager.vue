@@ -13,12 +13,6 @@
         </section>
     </section>
 </template>
-<style scoped>
-    .main_box {display: flex;background: #FFF;width: 100%;}
-    .nav a {display: block;max-width: 163px;padding: 0 20px;line-height: 56px;color: #303133;font-size: 14px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;box-sizing: border-box;}
-    .nav a.current {color: #69c25c!important;}
-    .section {margin: 10px;flex: 1;overflow: hidden;}
-</style>
 <script>
     import Room from "./Room"
     export default {

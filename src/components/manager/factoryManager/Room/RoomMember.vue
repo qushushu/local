@@ -1,11 +1,9 @@
 <template>
     <el-form label-width="80px" size="mini" modal="true">
-         <el-transfer :titles="[$t('message.本种植间成员'), $t('message.全部成员')]" v-model="value" :data="dataUser"></el-transfer>
-         <div style="margin-top: 20px;text-align: center;margin-left: -80px;">
-             <el-form-item> 
-                <el-button type="primary" @click="submitForm1('r')">{{$t('message.确定')}}</el-button>
-            </el-form-item>
-         </div>
+        <el-transfer :titles="[$t('message.本种植间成员'), $t('message.全部成员')]" v-model="value" :data="dataUser" class="space-btm1"></el-transfer>
+        <el-form-item class="text-center"> 
+            <el-button type="primary" @click="submitForm1('r')">{{$t('message.确定')}}</el-button>
+        </el-form-item>
     </el-form>
 </template>
 <script>
@@ -57,7 +55,7 @@
                 if(res.code == 200) {
                     this.$message({
                       type: 'success',
-                      message: "设置成功"
+                      message: this.$t('message.设置成功')
                     });
                     this.getOneData(this.roomId)
                 }

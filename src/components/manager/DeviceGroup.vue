@@ -13,7 +13,7 @@
             <el-button type="solid" size="small"  @click="handleEdit" style="margin-bottom: 10px;">{{$t('message.新增')}}</el-button>
 			<!-- 新增 end -->
 			<!-- 表格 start -->
-			<el-table ref="multipleTable" :data="tableData" border stripe size="small" tooltip-effect="dark">
+			<el-table ref="multipleTable" :data="tableData" border stripe size="small">
 			    <el-table-column prop="sort_id" width="58" :label="$t('message.序号')"></el-table-column>
 			    <el-table-column prop="dev_number" width="90px" :label="$t('message.机器编号')"></el-table-column>
 			    <el-table-column prop="description" :label="$t('message.备注')"></el-table-column>
@@ -40,6 +40,7 @@
 	</div>
 </template>
 <script>
+	import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
@@ -58,20 +59,16 @@
 		        }],   // 模板
 		        modelList: [],
 		        rules: {
-			        dev_number: [{ required: true, message: '请输入机器编号', trigger: 'blur' }],
+			        dev_number: [{ required: true, message: this.$t('message.请输入机器编号'), trigger: 'blur' }],
 		        }
 	      	}
 		},
+		mixins: [envMixin],
 		computed: {
-			i18n() {
-                return this.$store.state.i18n
-            },
             opWidth() {
             	return this.i18n == "zh" ? 148 : 158;
             }
 		},
-		components: {
-	    },
 	    methods: {
 	    	// 获取机器列表
 	    	getDevParamList() {
@@ -79,7 +76,7 @@
 	    		let arr = this.tableData.map(item => {
 	    			return item.dev_number;
 	    		});
-	    		this.$store.commit("updateMobileDevGroup",this.tableData);
+	    		// this.$store.commit("updateMobileDevGroup",this.tableData);
 	    		this.updataTableData();
 	    	},
 	    	// 展示新建/编辑层

@@ -26,7 +26,7 @@
 	export default {
 		props: ["title","goBack"],
 		computed: {
-			showBack() {return this.goBack !== "false" && this.goBack !== false;}
+			showBack() {return this.goBack !== "false" && this.goBack !== false}
 		},
 		methods: {
 			toBack() {

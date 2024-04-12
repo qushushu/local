@@ -1,11 +1,8 @@
 <template>
   <a-card>
-    <card-header>
+    <card-header> 
       <span>{{$t("message.喷灌泵")}}：</span>
-      <div>
-        <ToOp />
-        <el-switch v-model="SIP" disabled />
-      </div>
+      <div><ToOp /><el-switch v-model="SIP" disabled /></div>
     </card-header>
     <div class="home-cardinner">
       <div>{{$t("message.本次持续时长(s)")}}: {{SIP1T.value}}</div> 

@@ -14,7 +14,7 @@ axios.defaults.headers.common['encrypt'] = 'false'
 function getFactory_num() {
 	let factory_num = ""
 	if(store.state.userInfo.factory.factory_num) {
-		factory_num = store.state.userInfo.factory.factory_num
+		factory_num = store.state.userInfo.factory.factory_num;
 	}
 	return factory_num;
 }
@@ -22,7 +22,7 @@ function getFactory_num() {
 function getDevice_num() {
 	let device_num = ""
 	if(store.state.currentInfo.dev.instance_number) {
-		device_num = store.state.currentInfo.dev.instance_number
+		device_num = store.state.currentInfo.dev.instance_number;
 	}
 	return device_num;
 }
@@ -786,7 +786,6 @@ export async function get_record_list({plant,scheme_name,start_time,end_time}) {
 	return res;
 }
 
-
 // 模拟量历史
 export async function history_ana({start_time,end_time,page_index,page_size}) {
 	let res = await axios({
@@ -943,6 +942,80 @@ export async function history_param({start_time,end_time,page_index,page_size}) 
 	return res;
 }
 
+
+// 参数历史
+export async function diglog(dig_param) {
+	let res = await axios({
+		method: 'post',
+        url: `${localBaseUrl}/la/history/diglog/get`,
+		data:{
+			data: {
+				dig_param
+			}
+		}
+	}).then(data => {
+		if(data && data.data && data.data.code == 200) {
+			let res = data.data.data
+			return res
+		}
+	}).catch(err => {
+		console.log(err);
+	})
+	return res;
+}
+
+// 手动调节
+export async function adjust(json) {
+	let webData = {}
+	if(isWeb) {
+		webData = {
+			factory: getFactory_num(),
+			device: getDevice_num(),
+			op_type: "OP_FARM_ADJUST",
+			op_id: "1",
+			dev_id: 1,
+			operateNo: `${Math.random()}`,
+		}
+	}
+	let res = await axios({
+		method: 'post',
+        url: `${localBaseUrl}/la/adjust`,
+		data:{
+			data: {
+				...json,
+				...webData
+			}}
+	}).then(data => {
+		if(data.data.code == 200) {
+		 return "success";
+		}
+	}).catch(err => {
+		console.log(err);
+	})
+	return res;
+}
+
+// 登录
+export async function login({account,phone,password}) {
+	let res = await axios({
+		method: 'post',
+        url: `${localBaseUrl}/lb/login`,
+		data:{
+			data: {
+				account,
+				phone,
+				password
+			}}
+	}).then(data => {
+		if(data.data.code == 200) {
+		 return data.data;
+		}
+	}).catch(err => {
+		console.log(err);
+	})
+	return res;
+}
+
 // 用户列表
 export async function get_user_list() {
 	let res = await axios({
@@ -1054,59 +1127,6 @@ export async function delete_user(id) {
 	})
 	return res;
 }
-
-// 手动调节
-export async function adjust(json) {
-	let webData = {}
-	if(isWeb) {
-		webData = {
-			factory: getFactory_num(),
-			device: getDevice_num(),
-			op_type: "OP_FARM_ADJUST",
-			op_id: "1",
-			dev_id: 1,
-			operateNo: `${Math.random()}`,
-		}
-	}
-	let res = await axios({
-		method: 'post',
-        url: `${localBaseUrl}/la/adjust`,
-		data:{
-			data: {
-				...json,
-				...webData
-			}}
-	}).then(data => {
-		if(data.data.code == 200) {
-		 return "success";
-		}
-	}).catch(err => {
-		console.log(err);
-	})
-	return res;
-}
-
-// 登录
-export async function login({account,phone,password}) {
-	let res = await axios({
-		method: 'post',
-        url: `${localBaseUrl}/lb/login`,
-		data:{
-			data: {
-				account,
-				phone,
-				password
-			}}
-	}).then(data => {
-		if(data.data.code == 200) {
-		 return data.data;
-		}
-	}).catch(err => {
-		console.log(err);
-	})
-	return res;
-}
-
 
 
 //////////////////////////////
@@ -1351,7 +1371,6 @@ export async function editDev({id,tag,no,room_id}) {
 	return res;
 }
 
-
 // 新增设备
 export async function createDev({factory_id,no,tag,room_id}) {
 	let res = await axios({
@@ -1486,7 +1505,6 @@ export async function getUserGroup({searchText,factory_id=0,id=0}) {
 	});
 	return res;
 }
-
 
 // 获取所有权限列表
 export async function getPowerList() {
@@ -1834,28 +1852,56 @@ export async function deleteUser(id) {
 }
 
 // 修改密码
-export async function password_modify({userId,newPassword,oldpassword}) {
-	let res = await axios({
-		method: 'post',
-        url: `${localBaseUrl}/manager/password_modify`,
-		data:{
-			userId,
-			oldpassword,
-			newPassword
-		}
-	}).then(data => {
-		if(data.data.code == 200 && !data.data.err) {
-		 return "success";
-		} else {
-			return data.data.err;
-		}
-	}).catch(err => {
-		return {
-			code: 500,
-			message: "操作失败，未知错误"
-		}
-	})
-	return res;
+export async function password_modify(data) {
+	if(isWeb) {
+		let {userId,newPassword,oldpassword} = data
+		let res = await axios({
+			method: 'post',
+	        url: `${localBaseUrl}/manager/password_modify`,
+			data:{
+				userId,
+				oldpassword,
+				newPassword
+			}
+		}).then(data => {
+			if(data.data.code == 200 && !data.data.err) {
+			 return "success";
+			} else {
+				return data.data.err;
+			}
+		}).catch(err => {
+			return {
+				code: 500,
+				message: "操作失败，未知错误"
+			}
+		})
+		return res;
+	} else {
+		let {userId,newPassword,oldpassword} = data
+		let res = await axios({
+			method: 'post',
+	        url: `${localBaseUrl}/la/user/modifyPwd`,
+			data:{
+				data: {
+					userId,
+					oldpassword,
+					newPassword
+				}
+			}
+		}).then(data => {
+			if(data.data.code == 200) {
+				return "success";
+			} else {
+				return data.data.msg
+			}
+		}).catch(err => {
+			return {
+				code: 500,
+				message: "操作失败，未知错误"
+			}
+		})
+		return res;
+	}
 }
 
 export async function getBigUserInfo(userId) {

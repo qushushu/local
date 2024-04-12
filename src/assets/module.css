@@ -1,0 +1,166 @@
+
+
+/*header start  */
+.head-box {padding: 12px 10px;background: #69C25C;}
+.logo {display: inline-block;border: none;text-decoration: none;color: #FFF;}
+h1 {font-size: 22px;margin: 0 0 0 8px;}
+.menu-icon {font-size: 28px; color: #FFF;cursor: pointer;margin-right: 18px;}
+.head-operateNo {margin-right: 20px;color: #FFF;}
+/* header end  */
+
+/*head Devices start*/
+.dev_list {padding: 4px 0;line-height: 30px;transition: .6s;cursor: pointer;}
+.dev_list:hover {background: #f8f8fa;}
+/*head Devices end*/
+
+/*head setting start*/
+.btn-setting {font-size: 28px; color: #FFF;cursor: pointer;}
+/*head setting end*/
+
+/*head ToggleLanguage start */
+.toggle-lan {color: #FFF;}
+/*head ToggleLanguage end */
+
+/*head ToggleRoom start */
+.el-dropdown-link {color: #FFF;cursor: pointer;margin-right: 18px;} 
+/*head ToggleRoom end */
+
+/*nav start*/
+.el-menu-item.is-active {color: #69C25C}
+/*nav end*/
+
+/* Calibration EC start  */
+.editText {font-size: 12px;text-decoration: none;color: #409eff;}
+.errTipText {font-size: 12px;color: red}
+.nobdCard {border: none !important;}
+/* Calibration EC end  */
+
+/* Cards start  */
+.ym-main_mobile {padding: 18px 2% !important;}
+/* Cards end  */
+
+/* Cards oneCard start */
+#app .common-card.one-card {margin-bottom: 15px;border: none ;border-radius: 10px;font-family: "Roboto", sans-serif;color: #FFF;background: #5cb385;box-shadow: 2px 4px 6px rgba(55, 52, 73, 0.4), inset -2px -2px 4px white;cursor: pointer;}
+#app .common-card.one-card:hover {background: #63c390;}
+#app .card-head {padding: 6px 20px;border-bottom: 1px solid #e3e8e6;color: #FFF;font-weight: bold;}
+#app .card-inner {padding-left: 20px;padding-right: 20px;line-height: 40px;}
+#app .card-inner > div {display: inline-block;width: 33.33%;}
+#app .one-card-text-dt,.one-card-text-dd {color: #FFF;line-height: 40px;}
+#app .one-card-text-dt {font-weight: bold;margin-top: 20px;line-height: 18px;}
+/* Cards oneCard end */
+
+/* common mode start  */
+.mode {text-align: center;margin-bottom: 10px;background: rgba(148,221,230,.5);padding: 8px 16px;color: #7a7a7a;font-size: 12px;font-weight: bold;}
+/* common mode end  */
+
+/* roomInfobox start  */
+.sea .text-dd {font-size: 26px;color:#FFF} 
+.sea .text-dt {font-size: 14px;color:#FFF}
+/* roomInfobox end  */
+  
+/* Dashboard start  */
+.btn-m {text-decoration: none;color: #000000a6;}
+.mint .btn-m {color: #FFF;}
+.home-cardinner {line-height: 30px;}
+/* Dashboard end  */
+
+/* Dashboard CurrentPlan start*/
+.el-descriptions__body {background: none;}
+.form-text * {color: #FFF;font-size: 12px;}
+.no_data {line-height: 60px;color: #FFF;}
+/* Dashboard CurrentPlan end*/
+
+/* Dashboard Level start*/
+@-webkit-keyframes water-wave {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+.shuixiang {border: 2px solid rgba(200,203,202,.4);height: 170px;position: relative;width: 100px;border-top: 0;border-bottom: 0;box-sizing: border-box;margin-top: 20px;margin-bottom: 8px;}
+.shuixiang:before {position: absolute;content: "";display: block;width: 102px;height: 20px;background: rgba(200,203,202,.4);border-radius: 50%;top: -10px;left: -3px;}
+.max-line,.min-line {position: absolute;width: 100%;}
+.max-line {top: 12px;}
+.min-line {bottom: 30px;}
+.max-line span,.min-line span {position: absolute;right: -100px;font-size: 12px;color: #F56C6C;}
+.warnLine,.warnLine1 {background: red !important;height: 3px !important;width: 15px !important;}
+.warnLine:after {content: attr(upnum);position: absolute;width: 130px;font-size: 12px;color: red !important;right: -141px;top: -14px;}
+.warnLine1:after {content: attr(downnum);position: absolute;width: 130px;font-size: 12px;color: red !important;right: -141px;top: -14px;}
+.targetLine {background: #67C23A !important;height: 3px !important;width: 15px !important;}
+.targetLine:after {content: attr(tarnum);position: absolute;width: 130px;font-size: 12px;color: #67C23A !important;right: -141px;top: -14px;}
+.adjLine {background: #E6A23C  !important;height: 3px !important;width: 15px !important;}
+.adjLine:after {content: attr(adjnum);position: absolute;width: 130px;font-size: 12px;color: #E6A23C !important;right: -141px;top: -14px;}
+.liqLine  {background: #513c20 !important;height: 3px !important;width: 15px !important;}
+.liqLine:after {content: attr(liqBlv);position: absolute;width: 130px;font-size: 12px;color: #513c20 !important;right: -141px;top: -6px;}
+.target-line,.adj-line {height: 2px;position: absolute;width: 100%;}
+.target-line {bottom: 65%;}
+.adj-line {bottom: 45%;}
+.target-line span,.adj-line span,.liq-line span {position: absolute;font-size: 12px;}
+.target-line span,.liq-line span {right: -97px;color: #67C23A;top: -6px;}
+.adj-line span {right: -120px;color: #E6A23C;top: -6px;}
+#kedu {position: absolute;left: 0;top: 18px;width: 100%;height: 136px;z-index: 4;}
+.kd {width: 10px;background: #2d2f2f;height: 1px;position: absolute;right: 0;top: 20px;}
+.currentHeight {background: rgba(51,207,255,.2);position: absolute;bottom: 0;height: 40px;width: 100%;}
+.currentHeight:after {content: attr(curnum);position: relative;width: 100%;color: #0b1325;font-size: 12px;text-align: center;top: -18px;display: block;}
+.waters {height: 65%; position: absolute;bottom: 0;left: 0; width: 100%; text-align: center; }
+.watersInner {width: 97px; animation: water-wave linear infinite; overflow: hidden;height: 100px;position: absolute;bottom: 0;left: 0;transform-origin: left; }
+.wave1{position: absolute; top: 40%; left: -25%; background: #33cfff; opacity: .7; width: 200%; height: 200%; border-radius: 40%; animation: inherit; animation-duration: 5s; }
+.wave {background: #0eaffe;width: 200%;height: 200%;position: absolute;top: 40%;left: -40%;animation: inherit;animation-duration: 7s;border-radius: 35%;}
+.wave3{position: absolute; top: 50%; left: -35%; background: #0f7ea4; opacity: .3; width: 200%; height: 200%; border-radius: 33%; animation: inherit; animation-duration: 11s; }
+.waters-cur {text-align: center;font-size: 12px;color: #0b1325;}
+#chunWater {position: absolute;bottom: 0;left: 0;width: 100%;height: 10px;background: #15AAE9;}
+/* Dashboard Level end*/
+/* Dashboard light start*/
+.space-btm_light {margin-bottom: 30px;}
+/* Dashboard light end*/
+
+/*Operation DevInfo start*/
+.huanhang {flex-wrap: wrap;}
+/*Operation DevInfo end*/
+/*Operation light start*/
+.light-tit {text-align: center;font-size: 14px;line-height: 30px;}
+.isloading {padding-bottom: 100px;}
+.btn-space {margin-right: 18px;}
+.btn-icon {cursor: pointer;}
+/*Operation light end*/
+/*Operation Operation_1 start*/
+.desc_txt {font-size: 14px; color: #5e6d82; line-height: 1.5em;}
+.title-td {width: 62px;}
+/*Operation Operation_1 end*/
+/*Operation Operation_2 start*/
+.auto_card {overflow: auto;}
+.normal-table .td-name {width: 80px;}
+.td-onoff {width: 65px;}
+.td-zs {width: 145px;}
+/*Operation Operation_2 end*/
+
+/* plan start  */
+.nmbtn {padding: 9px 15px; font-size: 12px; display: inline-block; line-height: 1;cursor: pointer; background: #409EFF; border: 1px solid #409EFF; color: #FFF; transition: .1s; user-select: none; border-radius: 4px;}
+.nmbtn:hover {color: #fff; border-color: #66b1ff; background-color: #66b1ff; }
+.miniIpt {width: 220px;}
+.space-left {margin-left: 8px}
+/* plan end  */
+
+/*switch start*/
+.open {color:  green;font-weight: bold;}
+.close {color:  red;font-weight: bold;}
+/*switch end*/
+
+/*ParameterAdjustment start*/
+.adjustTitle {color: #000;font-size: 14px;margin-bottom: 8px;font-weight: bold;}
+/*ParameterAdjustment end*/
+
+/*RoomManager start*/
+.main_box {display: flex;background: #FFF;width: 100%;}
+.nav a {display: block;max-width: 163px;padding: 0 20px;line-height: 56px;color: #303133;font-size: 14px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;box-sizing: border-box;}
+.nav a.current {color: #69c25c!important;}
+.section {margin: 10px;flex: 1;overflow: hidden;}
+/*RoomManager end*/
+
+/*RoomDevice start*/
+.text-desc {margin-top: 20px;color: ##606266;font-size: 12px;text-align: center;}
+.text-desc-link {color:#000;text-decoration: underline;}
+/*RoomDevice end*/
+
+/* Language start */
+.importBox {padding: 40px 0;}
+.importBox p {font-size: 12px;color: #333;margin-top: 30px;}
+/* Language end */

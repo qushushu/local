@@ -21,16 +21,10 @@
     import {adjust} from "../../store/ajax.js"
     export default {
         computed: {
-            operateNo() {
-                return this.$store.state.user.operateNo;
-            },
-            userId() {
-                return this.$store.state.user.userId;
-            },
+            operateNo() {return this.$store.state.userInfo.user.account},
             adjustBaseData() {
                 return {
                     operateNo: this.operateNo,
-                    op_id: this.userId,
                     op_type: "OP_FARM_ADJUST",
                     dev_id: 1
                 }

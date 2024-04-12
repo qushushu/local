@@ -2,7 +2,7 @@
 <template>
     <div>
         <el-dialog :title="$t('message.修改密码')" :modal="true" :visible.sync="showDialog" :width="loginDialogWidth" center :show-close="false">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" style="z-index: 2007;">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :label-width="labelWidth" style="z-index: 2007;">
             <el-form-item :label="$t('message.原密码')" prop="oldpassword">
                 <el-input show-password v-model="ruleForm.oldpassword" size="small"></el-input>
             </el-form-item>
@@ -23,6 +23,7 @@
 <script>
     import md5 from "md5"
     import {password_modify} from "../../../store/ajax"
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -35,21 +36,23 @@
                     oldpassword: [{ required: true, message: this.$t('message.原密码不能为空！'), trigger: 'blur'}],
                     password: [{ required: true, message: this.$t('message.请输入密码!'), trigger: 'blur'}],
                     rpassword: [{ required: true, message: this.$t('message.请确认密码!'), trigger: 'blur'}]
-                },
+                }
             }
         },
+        mixins: [envMixin],
         props: ["centerDialogVisible"],
         computed: {
             // 用户信息
             userId() {return this.$store.state.userInfo.user.id},
-            // 是否为移动端
-            isMobile() {return this.$store.state.isMobile},
             // 层大小
             loginDialogWidth() {return this.isMobile ? "403px" : "50%"},
             // 是否显示层
             showDialog: {
                 get() {return this.centerDialogVisible},
                 set(){this.resetPwdLayer('ruleForm')}
+            },
+            labelWidth() {
+               return this.i18n == 'zh' ? "100px" : "160px"
             }
         },
         methods: {

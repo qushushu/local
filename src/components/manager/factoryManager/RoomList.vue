@@ -16,7 +16,7 @@
             </div>
             <!-- 新增种植间 end -->
             <!-- 种植间列表 start -->
-            <el-table :data="tableData" border stripe size="small" tooltip-effect="dark">
+            <el-table :data="tableData" border stripe size="small">
               <el-table-column prop="room_name" :label="$t('message.种植间名称')"></el-table-column>
               <el-table-column prop="account" :label="$t('message.管理员')" width="141px"></el-table-column>
               <el-table-column fixed="right" :label="$t('message.操作')">
@@ -57,9 +57,6 @@
         </a-card>
     </div>
 </template>
-<style scoped>
-    .el-menu {display: none !important;}
-</style>
 <script>
     import {getRoomList,getUserRoleList,createRoom,updateRoom,deleteRoom} from '../../../store/ajax'
     import {globalUserEnter} from '../../../assets/tools/tool.js'
@@ -104,8 +101,6 @@
                     this.getRoomList();
                 }
             }
-        },
-        components: {
         },
         methods: {
             // 获取种植间列表
@@ -183,7 +178,7 @@
                         if(res.code == 200) {
                             this.$message({
                               type: 'success',
-                              message: "操作成功"
+                              message: this.$t("message.操作成功")
                             });
                             this.resetForm();
                             this.getRoomList();

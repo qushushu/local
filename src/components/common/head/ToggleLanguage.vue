@@ -7,7 +7,6 @@
         </el-dropdown-menu>
     </el-dropdown>
 </template>
-<style scoped></style>
 <script>
     export default {
         methods: {

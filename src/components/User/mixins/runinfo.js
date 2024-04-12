@@ -7,30 +7,26 @@ export const runInfoMixin = {
 		runInfo() {return this.$store.state.runInfo},
 		i18n() {return this.$store.state.i18n},
 		tableDataAna() {
-          	let ana = this.runInfo.ana;
           	return anaList.map(item => {
-                item["value"] = ana[item['code']];
-                return item
+                item["value"] = this.runInfo.ana[item['code']];
+                return item;
             });
         },
         tableDataDig() {
-          	let dig = this.runInfo.dig;
             return digList.map(item => {
-            	item.value = dig[item.code];
+            	item.value = this.runInfo.dig[item.code];
             	return item;
             });
         },
         tableDataAlarm() {
-          	let alarm = this.runInfo.alarm;
             return alarmList.map(item => {
-            	item.value = alarm[item.code];
+            	item.value = this.runInfo.alarm[item.code];
             	return item;
             });
         },
         tableDataComm() {
-          	let comm = this.runInfo.comm;
             return commList.map(item => {
-            	item.value = comm[item.code];
+            	item.value = this.runInfo.comm[item.code];
             	return item;
             });
         },
@@ -39,7 +35,7 @@ export const runInfoMixin = {
 	        	let f = Object.values(this.runInfo.lightVersion);
 	      	    return f.filter(item => item.dev_id);
         	} else {
-        		return null
+        		return null;
         	}
         },
         tableDataVersion() {return [this.runInfo.version]},
@@ -61,41 +57,37 @@ export const runInfoMixin = {
 					case "CO2":
 					case "LIQ_LV":
 						if(Number(re.value)) {
-							re.value = Number(re.value).toFixed(2)
+							re.value = Number(re.value).toFixed(2);
 						} else {
-							re.value = "--"
+							re.value = "--";
 						} 
 					break;
 					case "SIP1T":
 					case "SIP2T":
-						re.value = re.value ? re.value : '--'
+						re.value = re.value ? re.value : '--';
 					break;
 				}
-				if(this.i18n != "zh") {
-					if(languageList[re.name]) {
-				        re.name = languageList[re.name]
-				    }
-				}
+                re.name = this.i18n == "zh" ? re.zhName : re.enName;
 				return re;
 			} else {
 				return {};
 			}
 		},
+        // 获取单独或一组值
 		getRunInfo(type,arrCode) {
 			let arrFilter = [];
-			let result = []
+			let result = [];
 			switch(type) {
 				case "ana":
 					if(typeof arrCode === "string") {
 						arrFilter = this.tableDataAna.filter(item => item.code == arrCode);
-						return this.pushOne(arrFilter)
+						return this.pushOne(arrFilter);
 					} else {
 						for(let code of arrCode) {
 							arrFilter = this.tableDataAna.filter(item => item.code == code);
 							result.push(this.pushOne(arrFilter));
 						}
 					}
-					
 				break;
 				case "dig":
 					if(typeof arrCode === "string") {
@@ -105,7 +97,7 @@ export const runInfoMixin = {
 							re.refValue = re.value == 1;
 							return re;
 						} else {
-							return {}
+							return {};
 						}
 					} else {
 						for(let code of arrCode) {

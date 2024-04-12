@@ -5,9 +5,6 @@
 -->
 <template>
 	<div class="ym-main">
-         <!-- 当前编号(华能手机端隐藏) start -->
-        <!-- <slot></slot> -->
-        <!-- 当前编号(华能手机端隐藏) end -->
 		<a-card class="card-pd">
 			<!-- 标题 start -->
 			<PageHeader :title="$t('message.模板管理')" goBack="false"></PageHeader>
@@ -50,6 +47,7 @@
 </template>
 <script>
     import {get_dev_model_list,delete_dev_model,add_dev_model,modify_dev_model} from "../../../store/ajax.js"
+    import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
@@ -70,12 +68,10 @@
         	    fullscreenLoading: false,  // 是否显示整屏加载
 	        }
 		},
+        mixins: [envMixin],
         computed: {
-            i18n() {return this.$store.state.i18n},
             opWidth() {return this.i18n == "zh" ? 218 : 258},
             verWidth() {return this.i18n == "zh" ? 60 : 70}
-        },
-		components: {
         },
 	    methods: {
         	// 获取设备模板列表

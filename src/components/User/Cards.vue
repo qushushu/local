@@ -4,32 +4,29 @@
   其他说明：子组件的地址在同级目录Cards文件夹下。
 -->
 <template>
-    <div class="ym-main" :class="{'ym-main_mobile':isMobile}">
-      <div class="inner">
-        <RoomInfoBox v-if="devList.length"></RoomInfoBox>
-        <div v-if="devList">
-          <OneCard v-for="item,key in devList" :key="key" :dev="item"></OneCard>
-        </div>
-        <div v-if="!devList.length">
-          <el-empty :description="$t('message.此种植间尚未添加设备')"></el-empty>
-        </div>
-      </div>
-    </div>
+  <div class="ym-main" :class="{'ym-main_mobile':isMobile}">
+    <!-- 种植间信息 start -->
+    <RoomInfoBox v-if="devList.length"></RoomInfoBox>
+    <!-- 种植间信息 end -->
+    <!-- 设备列表 start -->
+    <div v-if="devList.length"><OneCard v-for="item,key in devList" :key="key" :dev="item"></OneCard></div>
+    <!-- 设备列表 end -->
+    <!-- 空设备 start -->
+    <el-empty v-else :description="$t('message.此种植间尚未添加设备')"></el-empty>
+    <!-- 空设备 end -->
+  </div>
 </template>
-<style scoped>
-  .ym-main_mobile {padding: 18px 2% !important;}
-</style>
 <script>
   import RoomInfoBox from "./common/RoomInfoBox"
   import OneCard from "./Cards/OneCard"
   import {autoUpdateMixin} from "./mixins/autoUpdate"
+  import {envMixin} from "@/components/mixins/envMix"
   export default {
     name: 'Cards',
-    mixins: [autoUpdateMixin],
+    mixins: [autoUpdateMixin,envMixin],
     computed: {
-      isMobile() {return this.$store.state.isMobile},
       currentRoomInfo() {return this.$store.state.currentInfo.room},
-      devList() {return this.currentRoomInfo.devs || []},
+      devList() {return this.currentRoomInfo.devs || []}
     },
     components: {
       RoomInfoBox,

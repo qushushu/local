@@ -15,7 +15,7 @@
     export default {
         mixins: [runInfoMixin],
         computed: {
-             dataInfo() {return this.getRunInfo("ana",["EC","PH","LIQ_LV","LIQ_TEMP"])},
+            dataInfo() {return this.getRunInfo("ana",["EC","PH","LIQ_LV","LIQ_TEMP"])},
         }
     }
 </script>

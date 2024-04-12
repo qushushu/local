@@ -1,8 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
 Vue.use(Vuex);
-import {opinion,setRunInfoOne} from "../assets/tools/tool"
-import {getUrl} from "../assets/tools/getRequestUrl"
+import {opinion} from "../assets/tools/tool"
 import {run_info,get_implement_plant,control,adjust} from "./ajax"
 import projectJson from "../config"
 let {isWeb} = projectJson;
@@ -33,32 +32,25 @@ let store = new Vuex.Store({
 	    currentInfo: {
 	    	room: {},
 	    	dev: {},
-	    	plant: {}
+	    	plant: {},
+	    	LocalDveNum: 0
 	    },
-
 	    isPlant: /plant/.test((new URL(location.href))["searchParams"].get("m")),
+	    isMobile,
 	    signNum: 0,
 		signTip: "",
 	    i18n,
 	    plant_dig: [],
 	    op_onOff: false,
-	    isMobile,
-	    
-	    /*  这些是之前本地版的，一会删除 */
-	    arrNumberList,
-	    currentPlanInfo: {},   // 当前种植方案信息 
-	    mobileInfo: "",
-	    apiurl: getUrl(),
-	    user: {
-	    	token: "",
-	    	operateNo: "",
-	    	userId: "",
-	    },
-	    userPower: 0,
-	    mobileDevGroup: [],
-		localMode,
+	    isWeb,
+	    mobileReqPort: Number(localStorage.mobileReqPort) || ''
 	},
 	mutations: {
+		// updataMobileReqPort
+		updateLocalDveNum(state,data) {
+			localStorage.LocalDveNum = data;
+			state.currentInfo.LocalDveNum = Number(data);
+		},
 		updateCurrentRoomInfo(state,data) {
 			localStorage.currentRoom = JSON.stringify(data);
 			state.currentInfo.room = data;
@@ -91,75 +83,76 @@ let store = new Vuex.Store({
 		},
 		// 更新运行状态信息
 		updateRunInfo(state,runInfo) {
-			let {alarm,ana,comm,dig,param,version} = runInfo;
-			let light_info = runInfo.light;
-			let jsonAna = {};
-			let jsonAlarm = {};
-			let jsonComm = {};
-			let jsonDig = {};
-			let jsonParam = {};
-			if(alarm) {
-				alarm.item.map(item => {
-					if(item) {
-						jsonAlarm[item["param_code"]] = item.value;
-					}
-				});
-			}
-			if(ana) {
-				ana.item.map(item => {
-					if(item) {
-						jsonAna[item["param_code"]] = item.value;
-					}
-				});
-			}
-			if(comm) {
-				comm.item.map(item => {
-					if(item) {
-						jsonComm[item["param_code"]] = item.value;
-					}
-				});
-			}
-			if(dig) {
-				dig.item.map(item => {
-					if(item) {
-						jsonDig[item["param_code"]] = item.value;
-					}
-				});
-			}
-			if(param) {
-				param.item.map(item => {
-					if(item) {
-						jsonParam[item["param_code"]] = item.value;
-					}
-				});
-			}
-			
-
-			/* 育苗灯控 */
-			let lightVersion = {};
-			if(runInfo.light && runInfo.light.ver) {
-				lightVersion = runInfo.light.ver
-			}
-			state.runInfo.alarm = jsonAlarm;
-			state.runInfo.ana = jsonAna;
-			state.runInfo.comm = jsonComm;
-			state.runInfo.dig = jsonDig;
-			state.runInfo.param = jsonParam;
-			state.runInfo.lightVersion = lightVersion;
-			state.runInfo.version = version;
-
-			state.runInfo.light_ana = (light_info && light_info.ana) ? light_info.ana : [];
-			state.runInfo.light_dig = (light_info && light_info.dig) ? light_info.dig : [];
-			let json_light_param = (light_info && light_info.param) ? light_info.param : [];
-			state.runInfo.light_param = Object.values(json_light_param);
-			state.plant_dig = [];
-			let result = [];
-			if(light_info && light_info.dig) {
-				for(let i in light_info.dig) {
-					result.push(light_info.dig[i].item);
+			if(runInfo) {
+				let {alarm,ana,comm,dig,param,version} = runInfo;
+				let light_info = runInfo.light;
+				let jsonAna = {};
+				let jsonAlarm = {};
+				let jsonComm = {};
+				let jsonDig = {};
+				let jsonParam = {};
+				if(alarm) {
+					alarm.item.map(item => {
+						if(item) {
+							jsonAlarm[item["param_code"]] = item.value;
+						}
+					});
 				}
+				if(ana) {
+					ana.item.map(item => {
+						if(item) {
+							jsonAna[item["param_code"]] = item.value;
+						}
+					});
+				}
+				if(comm) {
+					comm.item.map(item => {
+						if(item) {
+							jsonComm[item["param_code"]] = item.value;
+						}
+					});
+				}
+				if(dig) {
+					dig.item.map(item => {
+						if(item) {
+							jsonDig[item["param_code"]] = item.value;
+						}
+					});
+				}
+				if(param) {
+					param.item.map(item => {
+						if(item) {
+							jsonParam[item["param_code"]] = item.value;
+						}
+					});
+				}
+
+				/* 育苗灯控 */
+				let lightVersion = {};
+				if(runInfo.light && runInfo.light.ver) {
+					lightVersion = runInfo.light.ver
+				}
+				state.runInfo.alarm = jsonAlarm;
+				state.runInfo.ana = jsonAna;
+				state.runInfo.comm = jsonComm;
+				state.runInfo.dig = jsonDig;
+				state.runInfo.param = jsonParam;
+				state.runInfo.lightVersion = lightVersion;
+				state.runInfo.version = version;
+
+				state.runInfo.light_ana = (light_info && light_info.ana) ? light_info.ana : [];
+				state.runInfo.light_dig = (light_info && light_info.dig) ? light_info.dig : [];
+				let json_light_param = (light_info && light_info.param) ? light_info.param : [];
+				state.runInfo.light_param = Object.values(json_light_param);
+				state.plant_dig = [];
+				let result = [];
+				if(light_info && light_info.dig) {
+					for(let i in light_info.dig) {
+						result.push(light_info.dig[i].item);
+					}
+				}
+				state.plant_dig = result;
 			}
-			state.plant_dig = result;
 		},
 		signNum(state,obj) {
 			if(obj.reset) {
@@ -169,64 +162,8 @@ let store = new Vuex.Store({
 			}
 			state.signTip = obj.tip;
 		}
-
-
-
-
-
-
-
-
-		// updateMobileDevGroup(state,arr) {
-		// 	state.mobileDevGroup = arr;
-		// },
-		// updateMobileInfo(state,str) {
-		// 	state.mobileInfo = str;
-		// },
-		// // 更新用户权限
-		// updateUserPower(state,number) {
-		// 	state.userPower = parseInt(number);
-		// },
-		// // 更新用户信息
-		// resetUser(state,{token,operateNo,userId}) {
-		// 	state.user = {
-		// 		token,
-		// 		operateNo,
-		// 		userId
-		// 	}
-		// },
-		
-		// updateMobileBaseUrl(state,s) {
-		// 	state.apiurl = s;
-		// 	window.localStorage.apiurl = s;
-		// },
-		// // 更新当前种植方案信息
-		// updateCurrentPlanInfo(state,s) {
-		// 	state.currentPlanInfo = s;
-		// },
-		
 	},
 	actions: {
-		// 获得当前用户级别
-		// async updateUserPower({commit}) {
-		// 	let {token,userId} = this.state.user;
-		// 	if(!token || !userId) {
-		// 		// 用户未登录
-		// 		delete localStorage.operateNo;
-		// 		delete localStorage.token;
-		// 		delete localStorage.userId;
-		// 		delete localStorage.userPower;
-		// 		commit("updateUserPower",0);
-		// 	} else {
-		// 		// 用户已登录获取用户权限
-		// 		let res = await get_user(userId);
-		// 		if(res) {
-		// 			let role = res.role
-		// 			localStorage.userPower = role;
-	 //                commit("updateUserPower",role);
-		// 		}
-		// 	}
-		// },
 		// 更新当前状态
 		async updateRunInfo({state,commit}) {
 			setTimeout(async ()=> {
@@ -236,7 +173,7 @@ let store = new Vuex.Store({
 				} else {
 					commit("updateRunInfo",await run_info("1"));
 				}
-			},300)
+			},300);
 		},
 		// 修改喷灌泵，回水泵、水阀状态、蠕动泵
 		async control(d,data1) {
@@ -282,19 +219,6 @@ let store = new Vuex.Store({
 				tip: res,
 				reset: false
 			});
-
-			// let {url,data} = data1;
-			// data.operateNo = d.state.user.operateNo;
-			// data.op_id = d.state.user.userId;
-			// data.op_type = "OP_FARM_ADJUST";
-			// data.dev_id = 1;
-			// let res = await adjust(data);
-			// if(res) {
-			// 	d.commit("signNum",{
-			// 		tip: res,
-			// 		reset: false
-			// 	});
-			// }
 		},
 		// 获取当前种植方案
 		async getCurrentPlan({commit}) {
@@ -302,11 +226,6 @@ let store = new Vuex.Store({
 				let res = await get_implement_plant();
 				commit("updateCurrentPlanInfo",res || {});
 			},300);
-			
-			// let res = await get_implement_plant();
-			// if(res) {
-			// 	 commit("updateCurrentPlanInfo",res);
-			// };
 		}
 	}
 });

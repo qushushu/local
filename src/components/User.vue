@@ -1,30 +1,30 @@
 <!-- 
   组件说明：本组件为系统管理员登录后展示的管理用户组件。
   进入方式：系统管理员登录后自动跳转至该页面。
-  用户权限：只有系统管理员方可查看。
+  用户权限：只有系统管理员方可查看，其他用户（或登录用户）进入此页后将自动跳转至首页。
 -->
 <template>
     <div class="ym-main">
         <a-card class="card-pd">
             <!-- 标题 start -->
-            <PageHeader :title="$t('message.用户管理')" goBack=false></PageHeader>
+            <PageHeader title="用户管理" goBack=false></PageHeader>
             <!-- 标题 end -->
             <!-- 创建用户 start -->
             <div class="space-btm1">
-                <el-button type="primary" size="small" @click="showCreateUser">{{$t('message.创建用户')}}</el-button>
+                <el-button type="primary" size="small" @click="showCreateUser">创建用户</el-button>
             </div>
             <!-- 创建用户 end -->
             <!-- 用户表格 start -->
             <el-table :data="tableData" border stripe size="small" tooltip-effect="dark"> 
                 <el-table-column prop="id" label="id" width="40"> </el-table-column>
-                <el-table-column prop="account" :label="$t('message.用户名')"> </el-table-column>
-                <el-table-column prop="role" :label="$t('message.身份')" width="74"> </el-table-column>
-                <el-table-column prop="phone" :label="$t('message.电话')"></el-table-column>
+                <el-table-column prop="account" label="用户名"> </el-table-column>
+                <el-table-column prop="role" label="身份" width="74"> </el-table-column>
+                <el-table-column prop="phone" label="电话"> </el-table-column>
                 <el-table-column prop="email" label="email"> </el-table-column>
-                <el-table-column :label="$t('message.操作')" width="150">
+                <el-table-column label="操作" width="150">
                   <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="getOneUser(scope.row)">{{$t('message.修改')}}</el-button>
-                    <el-button size="mini" type="danger" v-if="scope.row.role == '普通用户'" @click="delUser(scope.row)">{{$t('message.删除')}}</el-button>
+                    <el-button size="mini" type="primary" @click="getOneUser(scope.row)">修改</el-button>
+                    <el-button size="mini" type="danger" v-if="scope.row.role == '普通用户'" @click="delUser(scope.row)">删除</el-button>
                   </template>
                 </el-table-column>
             </el-table>
@@ -32,13 +32,13 @@
             <!-- 创建用户层 start -->
             <el-dialog title="创建用户" :width="autoDialogWidth" :visible.sync="dialogVisible">
                 <el-form ref="r" :model="r" label-width="80px" size="mini" modal="true" :rules="rules">
-                    <el-form-item :label="$t('message.用户名')" prop="account"><el-input v-model="r.account"></el-input></el-form-item>
-                    <el-form-item :label="$t('message.密码')" prop="password"><el-input v-model="r.password" show-password></el-input></el-form-item>
-                    <el-form-item :label="$t('message.电话')" prop="phone"><el-input v-model="r.phone"></el-input></el-form-item>
+                    <el-form-item label="用户名" prop="account"><el-input v-model="r.account"></el-input></el-form-item>
+                    <el-form-item label="密码" prop="password"><el-input v-model="r.password" show-password></el-input></el-form-item>
+                    <el-form-item label="电话" prop="phone"><el-input v-model="r.phone"></el-input></el-form-item>
                      <el-form-item label="email" prop="email"><el-input v-model="r.email"></el-input></el-form-item>
                     <el-form-item> 
-                        <el-button @click="resetCreateUser('r')">{{$t('message.取消')}}</el-button>
-                        <el-button type="primary" @click="submitCreateUser('r')">{{$t('message.确定')}}确定</el-button>
+                        <el-button @click="resetCreateUser('r')">取 消</el-button>
+                        <el-button type="primary" @click="submitCreateUser('r')">确 定</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -61,8 +61,11 @@
     </div>
 </template>
 <script>
+    import PageHeader from "./common/PageHeader"
+    import {autoJump} from "../assets/tools/tool"
+    import axios from 'axios'
     import md5 from "md5"
-    import {get_user_list,get_user,add_user,modify_user,delete_user} from "../../store/ajax.js"
+    import aCard from "./common/Acard"
     export default {
         data() {
             return {
@@ -90,11 +93,16 @@
             }
         },
         components: {
+            PageHeader,
+            aCard
         },
         computed: {
             // 是否为移动端
             isMobile() {
                 return this.$store.state.isMobile;
+            },
+            apiurl() {
+                return this.$store.state.apiurl;
             },
             // 层大小
             autoDialogWidth() {
@@ -103,30 +111,45 @@
         },
         methods: {
             // 获取所有用户
-            async getAllUser() {
-                let res = await get_user_list();
-                if(res) {
-                    res = res.map(item => {
+            getAllUser() {
+                axios({
+                    url: `${this.apiurl}/la/user/get_list`,
+                    method: "post",
+                    data: {
+                        data: {}
+                    }
+                }).then(data => {
+                    data.data.data = data.data.data.map(item => {
                         switch(item.role) {
                             case '1':
-                                item.role = this.$t('message.普通用户')
+                                item.role = "普通用户"
                             break;
                             case '2':
-                                item.role = this.$t('message.管理员')
+                                item.role = "管理员"
                             break;
                         }
                         return item;
                     })
-                    this.tableData = res;
-                }
+                    this.tableData = data.data.data;
+                })
             },
             // 获取单一用户信息
-            async getOneUser({id}) {
+            getOneUser({id}) {
                 this.dialogVisible1 = true;
-                let res = await get_user(id);
-                if(res) {
-                     this.editCurrent = res;
+                let data = {
+                    id
                 }
+                axios({
+                    method: "post",
+                    url: `${this.apiurl}/la/user/get`,
+                    data: {
+                        data
+                    }
+                }).then(data=> {
+                    if(data.data.code === 200) {
+                        this.editCurrent = data.data.data;
+                    }
+                });
             },
             // 显示创建用户层
             showCreateUser() {
@@ -168,7 +191,7 @@
                     });
                     return; 
                 }
-                this.$refs[formName].validate(async valid => {
+                this.$refs[formName].validate(valid => {
                     if(valid) {
                         let data = {
                             account: this.r.account,
@@ -177,15 +200,22 @@
                             phone: this.r.phone,
                             email: this.r.email,
                         }
-                        let res = await add_user(data);
-                        if(res) {
-                            this.$message({
-                              type: 'success',
-                              message: '创建成功'
-                            });
-                            this.resetCreateUser(formName);
-                            this.getAllUser();
-                        }
+                        axios({
+                            method: "post",
+                            url: `${this.apiurl}/la/user/add`,
+                            data: {
+                                data
+                            }
+                        }).then(data=> {
+                            if(data.data.code === 200) {
+                                this.$message({
+                                  type: 'success',
+                                  message: '创建成功'
+                                });
+                                this.resetCreateUser(formName);
+                                this.getAllUser();
+                            }
+                        })
                     } else {
                         return false;
                     }
@@ -201,7 +231,7 @@
                 this.r.email = "";
             },
             // 提交编辑用户
-            async submitEditUser(formName) {
+            submitEditUser(formName) {
                 if(!this.isUsername(this.editCurrent.account)) {
                     this.$message({
                       type: 'error',
@@ -238,15 +268,22 @@
                      country_code: "cn"
                 };
                 data = {...data,...fixedJson};
-                let res = await modify_user(data);
-                if(res) {
-                    this.$message({
-                      type: 'success',
-                      message: '修改成功'
-                    });
-                    this.resetEditUser(formName);
-                    this.getAllUser();
-                }
+                axios({
+                    method: "post",
+                    url: `${this.apiurl}/la/user/modify`,
+                    data: {
+                        data
+                    }
+                }).then(data=> {
+                    if(data.data.code === 200) {
+                        this.$message({
+                          type: 'success',
+                          message: '修改成功'
+                        });
+                        this.resetEditUser(formName);
+                        this.getAllUser();
+                    }
+                })
             },
             // 重置编辑用户
             resetEditUser(formName) {
@@ -264,25 +301,35 @@
                   distinguishCancelAndClose: true,
                   confirmButtonText: '确认',
                   cancelButtonText: '取消'
-                }).then(async _=> {
-                    let res = await delete_user(id);
-                    if(res) {
-                        this.$message({
-                          type: 'success',
-                          message: '删除成功'
-                        });
-                        this.getAllUser();
-                    } else {
-                        this.$message({
-                          type: 'error',
-                          message: '删除失败'
-                        });
-                    }
+                }).then(_=> {
+                    axios({
+                        method: "post",
+                        url: `${this.apiurl}/la/user/delete`,
+                        data: {
+                            data: {
+                                id
+                            }
+                        }
+                    }).then(data => {
+                        if(data.data.code === 200) {
+                            this.$message({
+                              type: 'success',
+                              message: '删除成功'
+                            });
+                            this.getAllUser();
+                        } else {
+                            this.$message({
+                              type: 'error',
+                              message: '删除失败'
+                            });
+                        }
+                    })
                 })
             }
         },
         mounted() {
             this.getAllUser();
+            autoJump(2);
         }
     }
 </script>

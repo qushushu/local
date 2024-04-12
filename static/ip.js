@@ -1,7 +1,5 @@
 window.ip = {
     // apiURL: "http://smartlux.com.cn:3601"
-    apiURL: "http://10.0.0.20:3601"
-    // apiURL: "http://10.0.0.33:3601"
-    // apiURL: "http://192.168.1.13:3601"
-	// apiURL: "http://192.168.0.107:3601"
+    apiURL: "http://10.0.0.22:3601",
+    webApiURL: "http://106.14.196.18:3801",
 }

@@ -1,7 +1,7 @@
 const autoUpdateMixin = {
 	data() {
 		return {
-		    timer: null,
+		    timer: null
 		}
 	},
 	mounted() {

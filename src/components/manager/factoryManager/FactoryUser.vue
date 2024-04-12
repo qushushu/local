@@ -15,12 +15,12 @@
             </div>
             <!-- 创建用户 end -->
             <!-- 用户表格 start -->
-            <el-table :data="tableData" border stripe size="small" tooltip-effect="dark"> 
+            <el-table :data="tableData" border stripe size="small"> 
                 <el-table-column prop="account" :label="$t('message.用户名')"> </el-table-column>
                 <el-table-column prop="role" :label="$t('message.身份')"> </el-table-column>
                 <el-table-column prop="phone" :label="$t('message.电话')"> </el-table-column>
                 <el-table-column prop="email" label="email"> </el-table-column>
-                <el-table-column label="操作" width="270">
+                <el-table-column :label="$t('message.操作')" width="270">
                   <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="getOneUser(scope.row)">{{$t('message.修改')}}</el-button>
                     <el-button size="mini" type="danger" @click="delUser(scope.row)">{{$t('message.删除')}}</el-button>
@@ -90,6 +90,7 @@
     import md5 from "md5"
     import {getFactoryUserList,createManagerUser,resetManager,getUserInfo,modifyUser,deleteUser} from '../../../store/ajax'
     import {getPowerText,globalUserEnter} from '../../../assets/tools/tool.js'
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -132,13 +133,8 @@
                 }
             }
         },
-        components: {
-        },
+        mixins: [envMixin],
         computed: {
-            // 是否为移动端
-            isMobile() {
-                return this.$store.state.isMobile;
-            },
             // 层大小
             autoDialogWidth() {
                 return this.isMobile ? "403px" : "50%";

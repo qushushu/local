@@ -10,7 +10,7 @@
             <PageHeader :title="$t('message.多语言配置')" goBack=false></PageHeader>
             <!-- 标题 end -->
             <!-- 导入按钮 start -->
-            <div class="importBox">
+            <div class="importBox text-center">
                 <label>
                     <span class="nmbtn">{{$t('message.导入excel')}}</span>
                     <input type="file" @change="importExcel" v-show="false">
@@ -21,17 +21,9 @@
         </a-card>
     </div>
 </template>
-<style scoped>
-    .nmbtn {padding: 9px 15px; font-size: 12px; border-radius: 3px;display: inline-block; line-height: 1; white-space: nowrap; cursor: pointer; background: #409EFF; border: 1px solid #409EFF; color: #FFF; -webkit-appearance: none; text-align: center; box-sizing: border-box; outline: none; margin: 0; transition: .1s; font-weight: 500; -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; border-radius: 4px;}
-    .nmbtn:hover {color: #fff; border-color: #66b1ff; background-color: #66b1ff; }
-    .importBox {text-align: center;padding: 40px 0;}
-    .importBox p {font-size: 12px;color: #333;margin-top: 30px;}
-</style>
 <script>
     import * as XLSX from "XLSX"
     export default {
-        components: {
-        },
         methods: {
             // 导入语言excel
             importExcel(e) {

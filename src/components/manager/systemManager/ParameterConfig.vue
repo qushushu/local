@@ -7,21 +7,16 @@
 	<div class="ym-main">
 		<a-card class="card-pd">
 			<!-- 头部标题 start -->
-			<PageHeader :title="$t('message.设置参数字典')" goBack=true></PageHeader>
+			<PageHeader :title="$t('message.设置参数字典')"></PageHeader>
 			<!-- 头部标题 end -->
-			<el-row type="flex" justify="space-between" class="space-btm1">
+			<div class="flex-between space-btm1">
 				<!-- 导入按钮 start -->
-				<el-col>
-					<label>
-						<span class="nmbtn">{{$t('message.导入excel')}}</span>
-						<input type="file" @change="importExcel" class="com-hide">
-					</label>
-				</el-col>
+				<label><span class="nmbtn">{{$t('message.导入excel')}}</span><input type="file" @change="importExcel"></label>
 				<!-- 导入按钮 end -->
 				<!-- 导出按钮 start -->
-				<el-col class="text-right"><el-button size="small" @click="downloadExl" v-if="tableData.length && !isMobile">{{$t('message.导出excel')}}</el-button></el-col>
+				<el-button size="small" @click="downloadExl" v-if="tableData.length && !isMobile">{{$t('message.导出excel')}}</el-button>
 				<!-- 导出按钮 end -->
-			</el-row>
+			</div>
 			<!-- 表格 start -->
 			<el-table :data="tableData" border size="small" :height="tbHeight">
 			    <el-table-column prop="sort_index" :label="$t('message.序号')" width="50"></el-table-column>
@@ -55,15 +50,12 @@
 		</a-card>
 	</div>
 </template>
-<style scoped>
-	.nmbtn {padding: 9px 15px; font-size: 12px; display: inline-block; line-height: 1;cursor: pointer; background: #409EFF; border: 1px solid #409EFF; color: #FFF; transition: .1s; user-select: none; border-radius: 4px;}
-    .nmbtn:hover {color: #fff; border-color: #66b1ff; background-color: #66b1ff; }
-</style>
 <script>
 	import * as XLSX from "XLSX"
 	import download from "../../../assets/tools/downloadExcel"
 	import {get_dev_model,delete_dev_param,add_dev_param,modify_dev_param} from "../../../store/ajax.js"
 	import {timeToMinute} from "../../../assets/tools/tool.js"
+	import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
@@ -86,14 +78,11 @@
 		        rules: {name: [{ required: true, message: this.$t("message.请选择参数项"), trigger: 'blur'}]} // 编辑字典验证规则
 	      	}
 		},
+		mixins: [envMixin],
 		computed: {
-            isMobile() {return this.$store.state.isMobile},
             tbHeight() {return this.isMobile ? "" : 450},
-            i18n() {return this.$store.state.i18n},
-            opWidth() {return this.i18n == "zh" ? 150 : 160},
+            opWidth() {return this.i18n == "zh" ? 150 : 160}
 		},
-		components: {
-	    },
 	    methods: {
 	    	// 获取数据
 	    	async getList() {

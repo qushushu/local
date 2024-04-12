@@ -5,69 +5,53 @@
 -->
 <template>
     <div class="ym-main">
-            <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
+        <!-- 顶部编号 start -->
+        <slot name="currentNum"></slot>
+        <!-- 顶部编号 end -->
         <a-card class="card-pd">
             <!-- 头部标题 start -->
-            <PageHeader :title="$t('message.设置参数值')" goBack=true></PageHeader>
+            <PageHeader :title="$t('message.设置参数值')" class="space-btm1"></PageHeader>
             <!-- 头部标题 end -->
-
             <!-- 表格 start -->
-            <div style="margin-top: 20px;">
-                <h5 class="adjustTitle">{{$t('message.参数值调整')}}</h5>
-                <el-table class="space-btm" ref="multipleTable" :data="tableDataShow" border stripe size="small" :height="heightW3" tooltip-effect="dark" style="margin-top: 20px;">
-                    <el-table-column prop="sort_index1" :label="$t('message.序号')" width="50"></el-table-column>
-                    <el-table-column prop="name" :label="$t('message.参数项')" width="160"></el-table-column>
-                    <el-table-column prop="param_code" :label="$t('message.代码')" width="150"></el-table-column>
-                    <el-table-column prop="ref_value" :label="$t('message.参数值')">
-                        <template slot-scope="scope">
-                            <el-input :placeholder="$t('message.请输入内容')" size="small" v-model="scope.row.ref_value" :disabled="disabledCodeList.includes(scope.row.param_code)" v-if="scope.row"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="unit" :label="$t('message.单位')" width="200"></el-table-column>
-                </el-table>
-            </div>
+            <el-table class="space-btm" :data="tableDataShow" border size="small" :height="heightW3">
+                <el-table-column prop="sort_index1" :label="$t('message.序号')" width="50"></el-table-column>
+                <el-table-column prop="name" :label="$t('message.参数项')" width="160"></el-table-column>
+                <el-table-column prop="param_code" :label="$t('message.代码')" width="150"></el-table-column>
+                <el-table-column prop="ref_value" :label="$t('message.参数值')">
+                    <template slot-scope="scope">
+                        <el-input :placeholder="$t('message.请输入内容')" size="small" v-model="scope.row.ref_value" :disabled="disabledCodeList.includes(scope.row.param_code)" v-if="scope.row"></el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="unit" :label="$t('message.单位')" width="200"></el-table-column>
+            </el-table>
             <!-- 表格 end -->
             <!-- 功能按钮 start -->
-            <div>
-                <el-button type="primary" size="small" @click="save">{{$t('message.保存')}}</el-button>
-                <el-button type="warning" size="small" @click="read">{{$t('message.读设备参数')}}</el-button>
-            </div>
+            <div><el-button type="primary" size="small" @click="save">{{$t('message.保存')}}</el-button><el-button type="warning" size="small" @click="read">{{$t('message.读设备参数')}}</el-button></div>
             <!-- 功能按钮 end -->
         </a-card>
     </div>
 </template>
-<style scoped>
-    .nmbtn {padding: 9px 15px; font-size: 12px; display: inline-block; line-height: 1;cursor: pointer; background: #409EFF; border: 1px solid #409EFF; color: #FFF; transition: .1s; user-select: none; border-radius: 4px;}
-    .nmbtn:hover {color: #fff; border-color: #66b1ff; background-color: #66b1ff;}
-    .adjustTitle {color: #000;font-size: 14px;margin-bottom: 8px;font-weight: bold;}
-</style>
 <script>
     import {get_dev_model,get_dev,save_device_param_item,read_device_param,write_device_param} from "../../store/ajax"
     import * as XLSX from "XLSX"
-    import arrDigList from "../../config/config/param/dig_list"
     import base_params from "../../config/config/param/base_params"
     import {switchTimeToShow,switchTimeToSubmit} from "../../assets/tools/tool.js"
-    import projectJson from "../../config"
-    let {isPlant,isWeb} = projectJson;
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
                 fullscreenLoading: false,
                 param_item: {},
+                tableData: [],
                 tableDataShow: [],
-                tableData1: [],
                 control1: [],
                 disabledCodeList: ["MODEL","CONTROL1","CONTROL2"]
             }
         },
+        mixins: [envMixin],
         computed: {
             userInfo() {return this.$store.state.userInfo},
-            isMobile() {return this.$store.state.isMobile},
             heightW3() {return this.isMobile ? 805 : 647},
-            isPlant() {return this.$store.state.isPlant},
             originCtrol1() {
                 let tb = this.tableDataShow;
                 let res = '0';
@@ -76,8 +60,7 @@
                     Number(rf) && (res = String(Number(rf).toString(2)));
                 }
                 return res.padStart(15,"0").split("").reverse().map(item => item == '1');
-            },
-            isWeb() {return isWeb}
+            }
         },
         watch: {
             originCtrol1(d) {
@@ -219,11 +202,6 @@
         },
         mounted() {
             this.getList();
-            if(this.isPlant) {
-                this.tableData1 = arrDigList.filter(item => !item.isSeedling);
-            } else {
-                this.tableData1 = arrDigList;
-            }
         }
     }
 </script>

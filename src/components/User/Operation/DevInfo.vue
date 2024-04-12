@@ -1,5 +1,5 @@
 <template>
-    <a-card class="space-btm1 card-pd mobile-no-bg">
+    <a-card class="space-btm1 card-pd">
         <!-- 当前环境信息展示 start -->
         <el-row justify="space-between" :gutter="12" type="flex" class="huanhang">
             <el-col class="space-btm1" :span="6" :xs="7">

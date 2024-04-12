@@ -10,6 +10,17 @@
         <div id="round"></div>
     </div>
 </template>
+<style scoped>
+    .time{height: 60px; width: 60px; position: fixed; right: 10px; top: 50%;transform: translateY(-50%); background: #3C3C3C; border-radius: 50%;box-shadow: 0 0 0 5px #3C3C3C;z-index: 1000;}
+    #kd-box {width: 100%;height: 100%;position: absolute;left: 0;top: 0; }
+    #hour,#minute,#second {position: absolute;height: 50%;background: #FFF;position: absolute;left: 50%;top: 0;transform-origin: left bottom;transform: rotate(10deg)}
+    #hour {width: 2px;background: -webkit-linear-gradient(bottom,#FFF 0,#FFF 38%,rgba(0,0,0,0) 38%);}
+    #minute {width: 1px;background: -webkit-linear-gradient(bottom,#FFF 0,#FFF 60%,rgba(0,0,0,0) 60%);}
+    #second {width: 1px;background: -webkit-linear-gradient(bottom,#FE3163 0,#FE3163 85%,rgba(0,0,0,0) 85%);}
+    #round {width: 10%;height: 10%;border-radius: 50%;background: #FFF;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)}
+    #kd-box >>> div {width: 2px;height: 50%;background: -webkit-linear-gradient(top,#8E8E8E 0,#8E8E8E 2%,rgba(0,0,0,0) 2%);position: absolute;left: 50%;top: 0;transform-origin: center bottom}
+    #kd-box >>> .long {background: -webkit-linear-gradient(top,#8E8E8E 0,#8E8E8E 9%,rgba(0,0,0,0) 9%);}
+</style>
 <script>
     function fixedDoc() {
         document.documentElement.style.height = "100%";
@@ -87,12 +98,3 @@
         }
     }
 </script>
-<style scoped>
-    .time{height: 60px; width: 60px; position: fixed; right: 10px; top: 50%;transform: translateY(-50%); background: #3C3C3C; border-radius: 50%;box-shadow: 0 0 0 5px #3C3C3C;z-index: 1000;}
-    #kd-box {width: 100%;height: 100%;position: absolute;left: 0;top: 0; }
-    #hour,#minute,#second {position: absolute;height: 50%;background: #FFF;position: absolute;left: 50%;top: 0;transform-origin: left bottom;transform: rotate(10deg)}
-    #hour {width: 2px;background: -webkit-linear-gradient(bottom,#FFF 0,#FFF 38%,rgba(0,0,0,0) 38%);}
-    #minute {width: 1px;background: -webkit-linear-gradient(bottom,#FFF 0,#FFF 60%,rgba(0,0,0,0) 60%);}
-    #second {width: 1px;background: -webkit-linear-gradient(bottom,#FE3163 0,#FE3163 85%,rgba(0,0,0,0) 85%);}
-    #round {width: 10%;height: 10%;border-radius: 50%;background: #FFF;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)}
-</style>

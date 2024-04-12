@@ -5,26 +5,25 @@
 -->
 <template>
 	<div class="ym-main">
-		    <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
+		<!-- 顶部编号 start -->
+        <slot name="currentNum"></slot>
+        <!-- 顶部编号 end -->
 		<a-card class="card-pd">
 			<!-- 头部标题 start -->
-			<PageHeader :title="$t('message.方案管理')" goBack=true></PageHeader>
+			<PageHeader :title="$t('message.方案管理')"></PageHeader>
 			<!-- 头部标题 end -->
 			<!-- 搜索新增 start -->
 			<SearchBox :placeholder="$t('message.请输入育苗名称')" :data="plant" @search="getList" />
             <el-button type="solid" size="small"  @click="handleCreate">{{$t('message.新增')}}</el-button>
 			<!-- 搜索新增 end -->
 			<!-- 表格 start -->
-			<el-table ref="multipleTable" :data="tableData" border stripe size="small" tooltip-effect="dark" v-if="!isMobile">
-			    <el-table-column prop="scheme_name" :label="$t('message.方案名称')" width="135"></el-table-column>
+			<el-table :data="tableData" border size="small" v-if="!isMobile">
+			    <el-table-column prop="scheme_name" :label="$t('message.方案名称')"></el-table-column>
 			    <el-table-column prop="plant" :label="$t('message.育苗名称')" :width="colTdw3 "></el-table-column>
-			    <el-table-column prop="grow_cycle" :label="$t('message.周期')" width="50"></el-table-column>
+			    <el-table-column prop="grow_cycle" :label="$t('message.周期')"></el-table-column>
 			    <el-table-column prop="create_time" :label="$t('message.创建时间')" :width="colTdw1"></el-table-column>
 			    <el-table-column prop="remark" :label="$t('message.评价')"></el-table-column>
-			    <el-table-column prop="btns" :label="$t('message.操作')">
+			    <el-table-column prop="btns" :label="$t('message.操作')" width="355">
 			      	<template slot-scope="scope">
 			      		<div class="space-btm">
 					        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.编辑')}}</el-button>
@@ -39,32 +38,40 @@
 			      		</div>
 			      		<div>
 					        <el-button class="mobile-planSetting-btn5" size="mini" @click="handToCulRecords(scope.$index, scope.row)">{{$t('message.培植记录')}}</el-button>
-					        <el-button size="mini" :disabled="scope.row.id != currentPlantId" @click="overPlant(scope.row.id)">结束方案</el-button>
-					        <el-button size="mini" @click="startPlant(scope.row.id)">开启方案</el-button>
-					        <!-- <el-button size="mini" :disabled="Boolean(currentPlantId)" @click="startPlant(scope.row.id)">开启方案</el-button> -->
+					        <el-button size="mini" :disabled="scope.row.id != currentPlantId" @click="overPlant(scope.row.id)">{{$t('message.结束方案')}}</el-button>
+					        <el-button size="mini" @click="startPlant(scope.row.id)">{{$t('message.开启方案')}}</el-button>
 			      		</div>
 				    </template>
 			    </el-table-column>
 			</el-table>
-
-			<!-- <el-table ref="multipleTable" :data="tableData" border stripe size="small" tooltip-effect="dark" v-if="isMobile">
+			<el-table ref="multipleTable" :data="tableData" border stripe size="small" v-else>
 			    <el-table-column prop="scheme_col_info" :label="$t('message.方案 / 名称')"></el-table-column>
-			    <el-table-column prop="btns" :label="$t('message.操作')" width="280">
+			    <el-table-column prop="btns" :label="$t('message.操作')" width="180">
 			      	<template slot-scope="scope">
-			      		 <el-button size="mini" class="mobile-space-btn1" type="primary" @click="handleDetail(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.详情')}}</el-button>
-				        <el-button size="mini" class="mobile-space-btn1" type="primary" @click="handleEdit(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.编辑')}}</el-button>
-				        <el-button class="mobile-planSetting-btn2 mobile-space-btn1" size="mini" type="warning" @click="handleCopy(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading">{{$t('message.复制')}}</el-button> 
-				        <el-button class="mobile-planSetting-btn3 mobile-space-btn1" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" disabled v-if="scope.row.id == currentPlantId">{{$t('message.删除')}}</el-button>
-				        <el-button class="mobile-planSetting-btn3 mobile-space-btn1" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" v-if="scope.row.id != currentPlantId">{{$t('message.删除')}}</el-button>
+			      		<div class="space-btm">
+				      		<el-button size="mini" class="mobile-space-btn1" type="primary" @click="handleDetail(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.详情')}}</el-button>
+					        <el-button size="mini" class="mobile-space-btn1" type="primary" @click="handleEdit(scope.$index, scope.row)" :class="{'mobile-planSetting-btn1': true}">{{$t('message.编辑')}}</el-button>
+			      		</div>
+			      		<div>
+					        <el-button class="mobile-planSetting-btn2 mobile-space-btn1" size="mini" type="warning" @click="handleCopy(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading">{{$t('message.复制')}}</el-button> 
+					        <el-button class="mobile-planSetting-btn3 mobile-space-btn1" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" disabled v-if="scope.row.id == currentPlantId || scope.row.record_count != 0">{{$t('message.删除')}}</el-button>
+					        <el-button class="mobile-planSetting-btn3 mobile-space-btn1" size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)" v-loading.fullscreen.lock="fullscreenLoading" v-else>{{$t('message.删除')}}</el-button>
+			      		</div>
 				    </template>
 			    </el-table-column>
-			    <el-table-column prop="btns" :label="$t('message.查看')" width="190">
+			    <el-table-column prop="btns" :label="$t('message.查看')" width="280">
 			    	<template slot-scope="scope">
-				        <el-button class="mobile-planSetting-btn4" size="mini" @click="handleToPlanStageShow(scope.$index, scope.row)">{{$t('message.查看阶段')}}</el-button>
-				        <el-button class="mobile-planSetting-btn5" size="mini" @click="handToCulRecords(scope.$index, scope.row)">{{$t('message.培植记录')}}</el-button>
+			    		<div class="space-btm">
+				        	<el-button class="mobile-planSetting-btn4" size="mini" @click="handleToPlanStageShow(scope.$index, scope.row)">{{$t('message.查看阶段')}}</el-button>
+				        	<el-button class="mobile-planSetting-btn5" size="mini" @click="handToCulRecords(scope.$index, scope.row)">{{$t('message.培植记录')}}</el-button>
+			    		</div>
+			    		<div>
+				        	<el-button size="mini" :disabled="scope.row.id != currentPlantId" @click="overPlant(scope.row.id)">{{$t('message.结束方案')}}</el-button>
+					        <el-button size="mini" @click="startPlant(scope.row.id)">{{$t('message.开启方案')}}</el-button>
+			    		</div>
 				    </template>
 			    </el-table-column>
-			</el-table> -->
+			</el-table>
 			<!-- 表格 start -->
 			<!-- 查看方案弹窗 start -->
 			<el-dialog :title="$t('message.查看方案')" :visible.sync="dialogVisibleSee" width="400px">
@@ -100,8 +107,7 @@
 <script>
 	import {formatTime} from "../../assets/tools/tool"
 	import {get_plant_list,del_plant,copy_plant,add_plant,modify_plant,plant_start,plant_finish} from "../../store/ajax.js"
-	import projectJson from "../../config"
-	let {isWeb} = projectJson;
+	import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
@@ -119,16 +125,15 @@
 		        dialogVisible: false,
 		        dialogVisibleSee: false,
 		        rules: {
-		        	scheme_name: [{required: true, message: '请输入计划名称', trigger: 'blur'}],
-			        plant: [{required: true, message: '请输入种植作物', trigger: 'blur'}]
+		        	scheme_name: [{required: true, message: this.$t('message.请输入计划名称'), trigger: 'blur'}],
+			        plant: [{required: true, message: this.$t('message.请输入种植作物'), trigger: 'blur'}]
 		        },
 		        fullscreenLoading: false,  // 是否显示整屏加载
 	      	}
 		},
+		mixins: [envMixin],
 	    computed: {
-	    	isWeb() {return isWeb},
             currentPlantId() {return this.$store.state.currentInfo.plant.id},
-            isMobile() {return this.$store.state.isMobile},
             colTdw2() {return this.isMobile ? 178 : 405},
             colTdw1() {return this.isMobile ? 100 : 150},
             colTdw3() {return this.isMobile ? 70 : 120},
@@ -169,12 +174,12 @@
                 await plant_finish(record_id);
             },
 			overPlant(id) {
-				this.$confirm("是否结束此方案？", this.$t("message.提示"), {
+				this.$confirm(this.$t("message.是否结束此方案？"), this.$t("message.提示"), {
                     distinguishCancelAndClose: true,
                     confirmButtonText: this.$t("message.确定"),
                     cancelButtonText: this.$t("message.取消"),
                 }).then(() => {
-                    this.$prompt("请填写结束方案原因(如：方案到期)", "结束方案", {
+                    this.$prompt(this.$t("message.请填写结束方案原因(如：方案到期)"), this.$t("message.结束方案"), {
                       confirmButtonText: this.$t("message.确定"),
                       cancelButtonText: this.$t("message.取消"),
                       inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
@@ -183,13 +188,13 @@
                         await this.finish(id);
                         this.$message({
                             type: 'success',
-                            message: "结束方案成功！"
+                            message: this.$t("message.结束方案成功！")
                         });
                         this.getList();
                     }).catch((err) => {
                         this.$message({
                             type: 'info',
-                            message: "取消结束方案"
+                            message: this.$t("message.取消结束方案")
                         });       
                     });
                 });
@@ -349,7 +354,6 @@
 		    }
 		},
 		mounted() {
-			console.log(this.currentPlantId);
 			this.getList();
 		}
 	}

@@ -6,25 +6,31 @@
                     <!-- 头部标题区 start -->
                     <h5 class="light-tit">{{$t("message.第")}} {{k}} {{$t("message.组植物灯")}}</h5>
                     <!-- 头部标题区 end -->
+                     <div class="text-center space-btm">
+                        <span class="btn-space">{{$t("message.温度")}}：{{lightInfo1[k-1][11]}}</span>
+                        <span class="btn-space">{{$t("message.湿度")}}：{{lightInfo1[k-1][12]}}</span>
+                        <span>CO2：{{lightInfo1[k-1][13]}}</span>
+                    </div>
                     <el-row type="flex" class="space-btm" justify="space-between">
                         <div>
                             <span class="btn-space" v-if="planManuInfo[k - 1]">{{$t("message.手动模式")}}：<el-switch v-model="planManuInfo[k - 1].value == 0 ? false : true" @change="changeLightGroupMode(k-1)"></el-switch>
                             </span>
-                            <span class="btn-space">开关1：<el-switch :disabled="planManuInfo[k - 1].value == 0" v-model="plantDigInfo[k - 1][0].value == 0 ? false : true" @change="changeLightDig($event,k-1,1)"></el-switch></span>
-                            <span>开关2：<el-switch :disabled="planManuInfo[k - 1].value == 0" v-model="plantDigInfo[k - 1][1].value == 0 ? false : true" @change="changeLightDig($event,k-1,2)"></el-switch></span>
+                            <span class="btn-space">{{$t("message.开关1")}}：<el-switch :disabled="planManuInfo[k - 1].value == 0" v-model="plantDigInfo[k - 1][0].value == 0 ? false : true" @change="changeLightDig($event,k-1,1)"></el-switch></span>
+                            <span class="btn-space">{{$t("message.开关2")}}：<el-switch :disabled="planManuInfo[k - 1].value == 0" v-model="plantDigInfo[k - 1][1].value == 0 ? false : true" @change="changeLightDig($event,k-1,2)"></el-switch></span>
+                            <span>{{$t("message.开关3")}}：<el-switch :disabled="planManuInfo[k - 1].value == 0" v-model="plantDigInfo[k - 1][2].value == 0 ? false : true" @change="changeLightDig1($event,k-1,3)"></el-switch></span>
                         </div>
                         <el-button type="primary" size="small" v-if="planManuInfo[k - 1].value == 1" @click="showDialogTemp(k)">{{$t("message.参数设置")}}</el-button>
                     </el-row>
                     <!-- 主体区域 start -->
                     <el-table ref="multipleTable" :data="tableData[k - 1]" size="small" border>
-                        <el-table-column prop="title" label="序号"></el-table-column>
-                        <el-table-column prop="white" label="白光亮度">
+                        <el-table-column prop="title" :label="$t('message.序号')"></el-table-column>
+                        <el-table-column prop="white" :label="$t('message.白光亮度')">
                             <template slot-scope="scope">
                                 <span>{{scope.row.white}}</span>
                                 <i class="el-icon-edit btn-icon" @click="showEditLightLayer(k-1,scope.row.white,'white',scope.row.index)" v-if="planManuInfo[k - 1].value == 1"></i>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="red" label="红光亮度">
+                        <el-table-column prop="red" :label="$t('message.红光亮度')">
                             <template slot-scope="scope">
                                 <span>{{scope.row.red}}</span>
                                 <i class="el-icon-edit btn-icon" @click="showEditLightLayer(k-1,scope.row.red,'red',scope.row.index)" v-if="planManuInfo[k - 1].value == 1"></i>
@@ -74,6 +80,7 @@
                             <el-switch v-model="statusLT_3" v-if="(scope.row.param_code == 'LT_3')"></el-switch>
                             <el-switch v-model="statusLT_4" v-if="(scope.row.param_code == 'LT_4')"></el-switch>
                             <el-switch v-model="statusMANU" v-if="(scope.row.param_code == 'MANU')"></el-switch>
+                            <el-switch v-model="FAN" v-if="(scope.row.param_code == 'FAN')"></el-switch>
                         </div>
                     </template>
                 </el-table-column>
@@ -87,12 +94,6 @@
         <!-- 参数设置层 end -->
     </div>
 </template>
-<style scoped>
-    .light-tit {text-align: center;font-size: 14px;line-height: 30px;}
-    .isloading {padding-bottom: 100px;}
-    .btn-space {margin-right: 18px;}
-    .btn-icon {cursor: pointer;}
-</style>
 <script>
     import {switchTimeToShow,switchTimeToSubmit,minuteToTime} from "../../../assets/tools/tool.js"
     import {read_device_param,adjust,write_device_param,control} from "../../../store/ajax"
@@ -112,6 +113,7 @@
                 statusLT_2: false,
                 statusLT_3: false,
                 statusLT_4: false,
+                FAN: false,
                 statusMANU: false,
                 dialogVisibleLight: false,
                 currentLightIndex: 0,
@@ -121,12 +123,8 @@
             };
         },
         computed: {
-            operateNo() {
-                return this.$store.state.userInfo.user.account
-            },
-            op_id() {
-                return String(this.$store.state.userInfo.user.id);
-            },
+            operateNo() {return this.$store.state.userInfo.user.account},
+            op_id() {return String(this.$store.state.userInfo.user.id)},
             lightInfo1() {
                 return Object.values(this.runInfo.light_ana).map(item => {
                     if(item["item"]) {
@@ -165,21 +163,24 @@
                 return arr;
             },
             // 种植开关信息
-            plantDigInfo() {return this.$store.state.plant_dig},
+            plantDigInfo() {
+                return this.$store.state.plant_dig
+            },
             // 种植Manu信息
             planManuInfo() {
                 let json = this.runInfo.light_param;
+                // console.log(json);
                 return json.map(item => {
                     if(item["item"]) {
                         let t2 = item["item"].filter(itm => itm["param_code"] == "MANU");
                         t2.length ? t2[0] : undefined
                         if(t2.length) {
-                            return t2[0]
+                            return t2[0];
                         } else {
-                            return undefined
+                            return undefined;
                         }
                     } else {
-                        return undefined
+                        return undefined;
                     }
                 })
             },
@@ -193,10 +194,7 @@
                     }
                 }
                 return result;
-            },
-            planInfo() {return this.$store.state.currentPlanInfo},
-            SUNRIZE() {return  this.planInfo.curStage.stage_content.length ? (this.minuteToTime(this.planInfo.curStage.stage_content[0].SUNRIZE) || null) : null},
-            SUNSET() {return this.planInfo.curStage.stage_content.length ? (this.minuteToTime(this.planInfo.curStage.stage_content[0].SUNSET) || null) : null},
+            }
         },
         methods: {
             changeLightDig(data,b,c) {
@@ -212,6 +210,36 @@
                         dev_id: b + 1,
                         data_id: c,
                         data_code: `light${c}`,
+                        value: data ? 1 : 0,
+                    }
+                    let res = await adjust(json);
+                    if(res) {
+                        this.$message({
+                            type: 'success',
+                            message: this.$t('message.修改成功')
+                        });
+                    } else {
+                        this.$message({
+                            type: 'success',
+                            message: this.$t('message.修改失败')
+                        });
+                    }
+                    // this.resetEditLayer();
+                })
+            },
+            changeLightDig1(data,b,c) {
+                this.$confirm("确认修改开关？", this.$t('message.提示'), {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: this.$t('message.确定'),
+                    cancelButtonText: this.$t('message.取消'),
+                }).then(async ()=> {
+                    let json = {
+                        op_id: this.op_id,
+                        operateNo: this.operateNo,
+                        op_type : "OP_LT_CTRL",
+                        dev_id: b + 1,
+                        data_id: 3,
+                        data_code: `FAN`,
                         value: data ? 1 : 0,
                     }
                     let res = await adjust(json);
@@ -412,7 +440,7 @@
                             case "LIGHT7":
                                 item.name = "灯3红光亮度";
                             break;
-                             case "LIGHT8":
+                            case "LIGHT8":
                                 item.name = "灯4红光亮度";
                             break;
 	                        case "MANU":
@@ -423,6 +451,9 @@
                                 // 手动默认设置成自动
                                 this.statusMANU = false;
 	                        break;
+                            case "FAN":
+                                item.name = "风扇";
+                            break;
 	                    }
 	                    return item;
 	                })
@@ -433,7 +464,7 @@
             async writeLightInfo() {
                 // let lightmaxdata = parseInt(this.getRefValueFromParam(this.tableDataLight,"LIGHT_MAX"));
                 // let lightdata = parseInt(this.getRefValueFromParam(this.tableDataLight,"LIGHT"));
-                let valTrue =  this.statusLT_1 || this.statusLT_2 || this.statusLT_3 || this.statusLT_4  ;
+                let valTrue =  this.statusLT_1 || this.statusLT_2 || this.statusLT_3 || this.statusLT_4 ;
                 // if((lightdata > lightmaxdata) && (!valTrue)) {
                 //     this.$message({
                 //         type: 'error',
@@ -481,6 +512,7 @@
                 this.setValueFromParam(this.cacheDataLight,"LT_1",this.statusLT_1 ? 1 : 0);
                 this.setValueFromParam(this.cacheDataLight,"LT_2",this.statusLT_2 ? 1 : 0);
                 this.setValueFromParam(this.cacheDataLight,"MANU",this.statusMANU ? 1 : 0);
+                this.setValueFromParam(this.cacheDataLight,"FAN",this.FAN ? 1 : 0);
                 
                 let res = await write_device_param({
                 	item:[...this.cacheDataLight],
@@ -542,7 +574,8 @@
 	                this.setValueFromParam(this.cacheDataLight,"LT_2",this.statusLT_2 ? 1 : 0);
 	                this.setValueFromParam(this.cacheDataLight,"LT_3",this.statusLT_3 ? 1 : 0);
 	                this.setValueFromParam(this.cacheDataLight,"LT_4",this.statusLT_4 ? 1 : 0);
-	                this.setValueFromParam(this.cacheDataLight,"MANU",this.statusMANU ? 1 : 0);
+                    this.setValueFromParam(this.cacheDataLight,"MANU",this.statusMANU ? 1 : 0);
+	                this.setValueFromParam(this.cacheDataLight,"MANU",this.FAN ? 1 : 0);
 	                
 	                let res = await write_device_param({
 	                	item:[...this.cacheDataLight],

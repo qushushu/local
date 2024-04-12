@@ -4,8 +4,7 @@ import ElementUI from 'element-ui';
 import {getUserPower} from "@/assets/tools/tool"
 import VueI18n from "vue-i18n"
 import 'element-ui/lib/theme-chalk/index.css';
-import projectJson from "../config"
-let {isWeb} = projectJson;
+import store from "../store"
 
 /* 登录页面 start */
 import Login from '@/components/Login'
@@ -15,13 +14,14 @@ import Login from '@/components/Login'
 import Cards from '@/components/User/Cards'
 import Dashboard from '@/components/User/Dashboard'
 import Operation from '@/components/User/Operation'
-import Device from '@/components/User/Device'
+
 import ParameterAdjustmentUser from '@/components/User/ParameterAdjustmentUser'
 import DeviceInfo from '@/components/User/DeviceInfo'
 import PlanSetting from '@/components/User/PlanSetting'
 import Plan from '@/components/User/Plan'
 import CulRecords from '@/components/User/CulRecords'
 import Calibration from '@/components/User/Calibration'
+import Switch from '@/components/User/Switch'
 /* 用户页面 end */
 
 /* 系统管理员页面 start */
@@ -43,9 +43,15 @@ import Sensor from '@/components/manager/Sensor'
 import DeviceGroup from '@/components/manager/DeviceGroup'
 /* 工厂管理员(种植间管理员)页面 end */
 
+/* 本地管理员 start */
+import localUser from '@/components/manager/localManager/User'
+import Device from '@/components/manager/localManager/Device'
+/* 本地管理员 end */
+
 Vue.use(Router)
 Vue.use(ElementUI);
 
+const isWeb = store.state.isWeb;
 let router = new Router({
   routes: [
     {
@@ -100,9 +106,17 @@ let router = new Router({
       path: '/Device',
       name: 'Device',
       meta: {
-        power: [4]
+        power: [2]
       },
       component: Device
+    },
+    {
+      path: '/Switch',
+      name: 'Switch',
+      meta: {
+        power: [4]
+      },
+      component: Switch
     },
     {
       path: '/ParameterAdjustmentUser',
@@ -211,6 +225,14 @@ let router = new Router({
       component: RoomList
     },
     {
+      path: '/User',
+      name: '/User',
+       meta: {
+        power: [2]
+      },
+      component: localUser
+    },
+    {
       path: '/RoomManager',
       name: '/RoomManager',
        meta: {
@@ -289,12 +311,21 @@ router.beforeEach((to,from,next)=> {
         break;
         // 工厂管理者
         case 2:
-          if(to.path !== "/FactoryUser") {
+          if(isWeb) {
+            if(to.path !== "/FactoryUser") {
+              next("/FactoryUser");
+            } else {
+              next();
+            }
             next("/FactoryUser");
           } else {
-            next();
+            if(to.path !== "/User") {
+              next("/User");
+            } else {
+              next();
+            }
+            next("/User");
           }
-          next("/FactoryUser");
         break;
         // 工作间管理员
         case 3:

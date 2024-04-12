@@ -11,7 +11,7 @@
             </div>
             <!-- 搜索 end -->
             <!-- 工厂列表 start -->
-            <el-table :data="tableData" border stripe size="small" tooltip-effect="dark">
+            <el-table :data="tableData" border stripe size="small">
               <el-table-column prop="factory_name" :label="$t('message.工厂名称')"></el-table-column>
               <el-table-column prop="factory_num" :label="$t('message.工厂编号')"></el-table-column>
               <el-table-column prop="factory_desc" :label="$t('message.描述')"></el-table-column>
@@ -46,9 +46,6 @@
         </a-card>
     </div>
 </template>
-<style scoped>
-    .el-menu {display: none !important;}
-</style>
 <script>
     import {getDataFactoryList,getDataEnterList,getOneFactoryInfo,getUserRoleList,createFactory,updateFactory,deleteFactory} from '../../../store/ajax'
     export default {
@@ -74,8 +71,6 @@
                     enterprise_id: [{ required: true, message: this.$t('message.请选择企业'), trigger: 'change'}],
                 }
             }
-        },
-        components: {
         },
         methods: {
              // 获取工厂列表

@@ -11,7 +11,7 @@
             </div>
             <!-- 创建客户 end -->
             <!-- 客户表 start -->
-            <el-table :data="tableData" border stripe size="small" tooltip-effect="dark">
+            <el-table :data="tableData" border stripe size="small">
               <el-table-column prop="enterprise_name" :label="$t('message.企业名称')"></el-table-column>
               <el-table-column prop="enterprise_desc" :label="$t('message.企业备注')"></el-table-column>
               <el-table-column prop="account" :label="$t('message.企业管理员')"></el-table-column>
@@ -48,6 +48,7 @@
 </style>
 <script>
     import {getDataEnterList,getOneEnterInfo,createEnterprise,updateEnterprise,deleteEnterprise,resetManager} from '../../../store/ajax'
+    import {envMixin} from "@/components/mixins/envMix"
     export default {
         data() {
             return {
@@ -69,12 +70,7 @@
                 }
             }
         },
-        computed: {
-            // 是否为移动端
-            isMobile() {return this.$store.state.isMobile},
-        },
-        components: {
-        },
+        mixins: [envMixin],
         methods: {
             // 获取客户列表
             async getEnterpriseList() {

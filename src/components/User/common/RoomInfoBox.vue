@@ -9,10 +9,6 @@
       </el-row>
   </a-card>
 </template>
-<style scoped>
-  .text-dd {font-size: 26px;color:#FFF} 
-  .text-dt {font-size: 14px;color:#FFF}
-</style>
 <script>
   import {runInfoMixin} from "../mixins/runinfo"
   export default {

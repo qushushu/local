@@ -5,19 +5,18 @@
  -->
 <template>
 	<div class="ym-main">
-		 <!-- 本地版编号 start -->
-        <slot name="dev_no" v-if="!isWeb"></slot>
-        <slot name="current_pos" v-if="isWeb"></slot>
-        <!-- 本地版编号 end -->
+		<!-- 顶部编号 start -->
+        <slot name="currentNum"></slot>
+        <!-- 顶部编号 end -->
 		<a-card class="card-pd">
 			<!-- 头部标题 start -->
-			<PageHeader :title="$t('message.培植记录')" goBack="true"></PageHeader>
+			<PageHeader :title="$t('message.培植记录')"></PageHeader>
 			<!-- 头部标题 end -->
 			<!-- 导出excel start -->
 			<el-button type="primary" v-if="!isMobile" size="small" @click="downloadExl" class="space-btm1">{{$t('message.导出excel')}}</el-button>
 			<!-- 导出excel end -->
 			<!-- 表格 start -->
-			<el-table ref="multipleTable" :data="recordList" border stripe size="small" tooltip-effect="dark">
+			<el-table ref="multipleTable" :data="recordList" border stripe size="small">
 			    <el-table-column prop="plant" :label="$t('message.育苗名称')"></el-table-column>
 			    <el-table-column prop="scheme_name" :label="$t('message.方案名称')"></el-table-column>
 			    <el-table-column prop="grow_cycle" :label="$t('message.生产周期(天)')" width="100"></el-table-column>
@@ -32,21 +31,17 @@
 	</div>
 </template>
 <script>
-	import projectJson from "../../config"
 	import download from "../../assets/tools/downloadExcel"
 	import {get_record_list} from "../../store/ajax"
 	import {formatTime} from "../../assets/tools/tool.js"
-	let {isPlant,isWeb} = projectJson;
+	import {envMixin} from "@/components/mixins/envMix"
 	export default {
 		data() {
 			return {
 				recordList: []
 			}
 		},
-	    computed: {
-            isMobile() {return this.$store.state.isMobile},
-            isWeb() {return isWeb}
-	    },
+		mixins: [envMixin],
 	    methods: {
 	    	// 获取培植记录
 	    	async getRecordList() {

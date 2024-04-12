@@ -7,10 +7,10 @@
         <DevInfo1 />
         <!-- 营养液相关信息 end -->
 		<!-- PC 转速、重量 start -->
-        <a-card style="overflow: auto;">
+        <a-card class="auto_card">
           	<table class="normal-table text-center tb-atw">
 				<tr>
-					<td class="td-name" style="width: 80px;"></td>
+					<td class="td-name"></td>
 					<td class="td-onoff">{{$t("message.开关")}}</td>
                     <td>{{$t("message.转速")}}</td>
 					<td class="td-zs">{{$t("message.转速调节")}}</td>
@@ -24,7 +24,7 @@
                     <td>{{nameList[num - 1]}}</td>
                     <!-- 蠕动泵名称 end -->
                     <!-- 开关 start -->
-                    <td> <el-switch @change="onChangeRdb" :disabled="runInfo.dig.AUTO === 1" :asid="num" v-model="radioOnOff[num-1]"></el-switch></td>
+                    <td><el-switch class="js_rdb" @change="onChangeRdb($event,num)" :disabled="runInfo.dig.AUTO === 1" :asid="num" v-model="radioOnOff[num-1]"></el-switch></td>
                     <!-- 开关 end -->
                     <!-- 转速 start -->
                     <td><span>{{showArrZs[num-1]}}</span></td>
@@ -44,16 +44,12 @@
 		<!-- PC 转速、重量 end -->
 	</div>
 </template>
-<style scoped>
-   .td-name {width: 105px;}
-   .td-onoff {width: 65px;}
-   .td-zs {width: 145px;}
-</style>
 <script>
     import {runInfoMixin} from "../mixins/runinfo"
+    import {envMixin} from "@/components/mixins/envMix"
     import DevInfo1 from "./DevInfo1"
 	export default {
-        mixins: [runInfoMixin],
+        mixins: [runInfoMixin,envMixin],
 		data() {
 			return {
 				nameList: [this.$t('message.A液蠕动泵'),this.$t('message.B液蠕动泵'),this.$t('message.C液蠕动泵'),this.$t('message.酸液蠕动泵'),this.$t('message.碱液蠕动泵')],
@@ -64,7 +60,6 @@
 			}
 		},
         computed: {
-            isMobile() {return this.$store.state.isMobile},
             // 获取当前转速信息
             showArrZs() {
                 let {ZS1,ZS2,ZS3,ZS4,ZS5} = this.runInfo.ana;
@@ -96,14 +91,15 @@
         },
 		methods: {
 			// 蠕动泵开关修改
-			onChangeRdb(checked) {
+			onChangeRdb(checked,num1) {
 				let value = checked ? 1 : 0;
 				this.$confirm(value ? `${this.$t('message.是否开启蠕动泵开关')}?` : `${this.$t('message.是否关闭蠕动泵开关')}?`, this.$t('message.提示'), {
                     distinguishCancelAndClose: true,
                     confirmButtonText: this.$t('message.确定'),
                     cancelButtonText: this.$t('message.取消'),
                 }).then(()=> {
-                    let tNode = event.target.parentNode;
+                    let nodeJsRdb = document.querySelectorAll(".js_rdb");
+                    let tNode = nodeJsRdb[num1 - 1];
                     let baseNum = parseInt(tNode.getAttribute("asid"));
 					this.$store.dispatch("control",{
 						data: {
